@@ -15,3 +15,5 @@ brew install cmake (fix some gyp problems)
 yarn add node-loader --save-dev
 
 externals / polyfill things
+
+Note, stylesheets must be named \*.global.scss

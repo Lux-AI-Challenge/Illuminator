@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
-import './index.css';
+import './control.global.scss';
 /**
  * Generic component. TODO probably split this up later
  */
