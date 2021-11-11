@@ -31,7 +31,7 @@ ipcMain.on('electron-store-set', async (event, key, val) => {
 });
 
 // setup dimensions
-setupDimensions(ipcMain);
+setupDimensions();
 
 export default class AppUpdater {
   constructor() {

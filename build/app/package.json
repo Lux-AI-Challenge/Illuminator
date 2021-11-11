@@ -12,6 +12,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "dimensions-ai-temp": "^0.0.3"
+    "dimensions-ai-temp": "^0.0.3",
+    "ssh2": "^1.5.0"
   }
 }

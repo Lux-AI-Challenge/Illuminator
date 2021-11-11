@@ -21,10 +21,9 @@ const devtoolsConfig =
         devtool: 'source-map',
       }
     : {};
-
 export default merge(baseConfig, {
   ...devtoolsConfig,
-
+  // externals: ['dimensions-ai-temp', 'ssh2'],
   mode: 'production',
 
   target: 'electron-main',

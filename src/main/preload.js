@@ -1,3 +1,4 @@
+require('regenerator-runtime/runtime');
 const { contextBridge, ipcRenderer } = require('electron');
 
 const handlers = {
