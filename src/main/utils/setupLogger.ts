@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint no-console: "off" */
 
 // configure console.log so that the messages go to renderer as well

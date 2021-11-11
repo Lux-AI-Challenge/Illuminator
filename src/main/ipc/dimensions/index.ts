@@ -13,7 +13,7 @@ export const setupDimensions = (store: Store) => {
    */
 
   handleFunc<Dimensions.Actions['MakeEnv']>(
-    'dim_makeEnv',
+    'dim_MakeEnv',
     async (_event, data) => {
       const env = await dim.makeEnv(data.env);
       const out = {
@@ -25,7 +25,7 @@ export const setupDimensions = (store: Store) => {
   );
 
   handleFunc<Dimensions.Actions['RunEpisode']>(
-    'dim_runEpisode',
+    'dim_RunEpisode',
     async (_event, data) => {
       const env = Environment.envmap.get(data.id);
       if (env) {
@@ -36,7 +36,7 @@ export const setupDimensions = (store: Store) => {
     }
   );
 
-  handleFunc<$TSFIXME>('dim_closeEnv', async (_event, data) => {
+  handleFunc<$TSFIXME>('dim_CloseEnv', async (_event, data) => {
     const env = Environment.envmap.get(data.id);
     if (env) {
       await env.close();

@@ -4,7 +4,6 @@ import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
 import './control.global.scss';
-import { STORE } from 'renderer/ipc/store/constants';
 /**
  * Generic component. TODO probably split this up later
  */

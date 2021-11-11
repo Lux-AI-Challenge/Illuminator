@@ -10,9 +10,9 @@ export const setup = (dim: Dimension, store: Store) => {
   /**
    * Auxillary
    */
-  handleFunc(
-    'dim_runSingleEpisode',
-    async (_event, data: RunSingleEpisodeIn) => {
+  handleFunc<Dimensions.Actions['RunSingleEpisode']>(
+    'dim_RunSingleEpisode',
+    async (_event, data) => {
       let env: Environment | null = null;
       try {
         env = await dim.makeEnv(data.env);

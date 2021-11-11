@@ -12,7 +12,7 @@ export const runSingleEpisode = async (
   console.log({ env });
   // env = '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/enva.py';
   console.log({ agents });
-  return window.electron.dimensions.runSingleEpisode({
+  return window.electron.dimensions.RunSingleEpisode({
     env,
     agents: [pyagent, jsagent],
     seed,
