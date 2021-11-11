@@ -4,9 +4,11 @@
 
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
+import Store from 'electron-store';
+import { STORE } from 'main/ipc/store/constants';
 import { handleDimFunc } from './wrapper';
 
-export const setup = (dim: Dimension) => {
+export const setup = (dim: Dimension, store: Store) => {
   /**
    * Auxillary
    */
@@ -16,6 +18,7 @@ export const setup = (dim: Dimension) => {
       let env: Environment | null = null;
       try {
         env = await dim.makeEnv(data.env);
+        store.set(STORE.ENV, data.env);
         const eps = await dim.runEpisode(env, data.agents);
         return eps.results;
       } finally {

@@ -4,6 +4,7 @@ import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
 import './control.global.scss';
+import { STORE } from 'renderer/ipc/store/constants';
 /**
  * Generic component. TODO probably split this up later
  */
@@ -24,10 +25,15 @@ const Control = () => {
         console.error(err);
       });
   };
+  // TODO move this out of this component
   const selectEnvironment = (e: React.FormEvent<HTMLInputElement>) => {
+    // window.electron.store.get(STORE.ENV).then(console.log)
+    // console.log({oldenv});
     const { files } = e.currentTarget;
     if (files && files.length > 0) {
-      setEnv(files[0].path);
+      const newEnv = files[0].path;
+      setEnv(newEnv);
+      // window.electron.store.set(STORE.ENV, newEnv);
     }
   };
   return (

@@ -17,21 +17,8 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { setupDimensions } from './dimensions/index';
+import { setupDimensions } from './ipc/dimensions/index';
 import setupLogger from './utils/setupLogger';
-
-const store = new Store();
-
-// IPC listener
-ipcMain.on('electron-store-get', async (_event, val) => {
-  store.get(val);
-});
-ipcMain.on('electron-store-set', async (_event, key, val) => {
-  store.set(key, val);
-});
-
-// setup dimensions
-setupDimensions();
 
 export default class AppUpdater {
   constructor() {

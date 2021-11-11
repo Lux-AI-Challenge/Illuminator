@@ -1,11 +1,12 @@
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
+import Store from 'electron-store';
 import { handleDimFunc } from './wrapper';
 import * as pipeline from './pipeline';
 
-export const setupDimensions = () => {
+export const setupDimensions = (store: Store) => {
   const dim = new Dimension();
-  pipeline.setup(dim);
+  pipeline.setup(dim, store);
 
   /**
    * Atomic replica functions
