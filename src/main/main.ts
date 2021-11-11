@@ -14,8 +14,23 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { setupDimensions } from './dimensions/index';
+
+const store = new Store();
+
+// IPC listener
+ipcMain.on('electron-store-get', async (event, val) => {
+  store.get(val);
+});
+ipcMain.on('electron-store-set', async (event, key, val) => {
+  store.set(key, val);
+});
+
+// setup dimensions
+setupDimensions(ipcMain);
 
 export default class AppUpdater {
   constructor() {

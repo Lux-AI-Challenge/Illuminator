@@ -11,5 +11,7 @@
     "postinstall": "yarn electron-rebuild && yarn link-modules"
   },
   "license": "Apache-2.0",
-  "dependencies": {}
+  "dependencies": {
+    "dimensions-ai-temp": "^0.0.1"
+  }
 }
