@@ -1,10 +1,13 @@
 import { ipcMain } from 'electron';
-import Store from 'electron-store';
+import ElectronStore from 'electron-store';
 import { setupDimensions } from './dimensions/index';
-// setup dimensions
+import { setupUser } from './user';
 
-const store = new Store();
+const store = new ElectronStore() as Store;
+
+// setup dimensions
 setupDimensions(store);
+setupUser(store);
 
 // IPC listener
 ipcMain.on('electron-store-get', async (_event, val) => {

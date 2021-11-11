@@ -1,3 +1,14 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type $TSFIXME = any;
+
+// extract all ipc handler functions from a actions interface
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ExtractHandlers<Actions extends Record<string, any>> = {
+  [Action in keyof Actions]: (
+    data: Actions[Action]['in']
+  ) => Promise<Actions[Action]['out']>;
+};
+
 interface Window {
   electron: {
     store: {
@@ -10,6 +21,7 @@ interface Window {
       runEpisode(data: RunEpisodeIn): Promise<RunEpisodeRet>;
       runSingleEpisode(data: RunSingleEpisodeIn): Promise<RunSingleEpsiodeRet>;
     };
+    user: ExtractHandlers<User.Actions>;
     ipcRenderer: {
       on(channel: string, func: (...args: any[]) => any): void;
       once(channel: string, func: (...args: any[]) => any): void;

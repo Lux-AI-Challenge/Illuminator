@@ -11,7 +11,9 @@ import { STORE } from 'renderer/ipc/store/constants';
 
 const Control = () => {
   const [env, setEnv] = useState('');
-  const [matchResult, setMatchResult] = useState<RunSingleEpsiodeRet>({
+  const [matchResult, setMatchResult] = useState<
+    Dimensions.Actions['RunSingleEpisode']['out'] // TODO: maybe extract some of these input/ouput types to somewhere else?
+  >({
     final: 'abc',
   });
   const runMatch = () => {

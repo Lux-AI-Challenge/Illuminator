@@ -1,7 +1,6 @@
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
-import Store from 'electron-store';
-import { handleDimFunc } from './wrapper';
+import { handleFunc } from '../wrapper';
 import * as pipeline from './pipeline';
 
 export const setupDimensions = (store: Store) => {
@@ -13,25 +12,31 @@ export const setupDimensions = (store: Store) => {
    * TODO: automate the generation of these?
    */
 
-  handleDimFunc('makeEnv', async (_event, data: MakeEnvIn) => {
-    const env = await dim.makeEnv(data.env);
-    const out: MakeEnvRet = {
-      name: env.name ?? '',
-      id: env.id,
-    };
-    return out;
-  });
-
-  handleDimFunc('runEpisode', async (_event, data: RunEpisodeIn) => {
-    const env = Environment.envmap.get(data.id);
-    if (env) {
-      const eps = await dim.runEpisode(env, data.agents);
-      return eps.results;
+  handleFunc<Dimensions.Actions['MakeEnv']>(
+    'dim_makeEnv',
+    async (_event, data) => {
+      const env = await dim.makeEnv(data.env);
+      const out = {
+        name: env.name ?? '',
+        id: env.id,
+      };
+      return out;
     }
-    throw Error(`Environment with id ${data.id} not found!`);
-  });
+  );
 
-  handleDimFunc('closeEnv', async (_event, data: RunEpisodeIn) => {
+  handleFunc<Dimensions.Actions['RunEpisode']>(
+    'dim_runEpisode',
+    async (_event, data) => {
+      const env = Environment.envmap.get(data.id);
+      if (env) {
+        const eps = await dim.runEpisode(env, data.agents);
+        return eps.results;
+      }
+      throw Error(`Environment with id ${data.id} not found!`);
+    }
+  );
+
+  handleFunc<$TSFIXME>('dim_closeEnv', async (_event, data) => {
     const env = Environment.envmap.get(data.id);
     if (env) {
       await env.close();
