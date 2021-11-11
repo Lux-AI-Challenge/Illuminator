@@ -23,10 +23,10 @@ import setupLogger from './utils/setupLogger';
 const store = new Store();
 
 // IPC listener
-ipcMain.on('electron-store-get', async (event, val) => {
+ipcMain.on('electron-store-get', async (_event, val) => {
   store.get(val);
 });
-ipcMain.on('electron-store-set', async (event, key, val) => {
+ipcMain.on('electron-store-set', async (_event, key, val) => {
   store.set(key, val);
 });
 
