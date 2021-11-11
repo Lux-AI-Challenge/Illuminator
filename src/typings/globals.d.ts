@@ -1,7 +1,3 @@
-interface EnvInfo {
-  name: string;
-  id: string;
-}
 interface Window {
   electron: {
     store: {
@@ -10,10 +6,11 @@ interface Window {
       // any other methods you've defined...
     };
     dimensions: {
-      makeEnv(env: string): EnvInfo;
+      makeEnv(data: MakeEnvIn): Promise<MakeEnvRet>;
+      runEpisode(data: RunEpisodeIn): Promise<RunEpisodeRet>;
+      runSingleEpisode(data: RunSingleEpisodeIn): Promise<RunSingleEpsiodeRet>;
     };
     ipcRenderer: {
-      myPing(): void;
       on(channel: string, func: (...args: any[]) => any): void;
       once(channel: string, func: (...args: any[]) => any): void;
     };

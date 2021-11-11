@@ -54,17 +54,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'Illuminator',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About Illuminator',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide Illuminator',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -157,26 +157,28 @@ export default class MenuBuilder {
         {
           label: 'Learn More',
           click() {
-            shell.openExternal('https://electronjs.org');
+            shell.openExternal('https://lux-ai.org');
           },
         },
         {
           label: 'Documentation',
           click() {
             shell.openExternal(
-              'https://github.com/electron/electron/tree/main/docs#readme'
+              'https://github.com/Lux-AI-Challenge/Illuminator/tree/main/'
             );
           },
         },
         {
           label: 'Community Discussions',
           click() {
+            // TODO!!!
             shell.openExternal('https://www.electronjs.org/community');
           },
         },
         {
           label: 'Search Issues',
           click() {
+            // TODO!!!
             shell.openExternal('https://github.com/electron/electron/issues');
           },
         },

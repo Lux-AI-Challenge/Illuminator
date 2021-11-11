@@ -12,6 +12,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "dimensions-ai-temp": "^0.0.2"
+    "dimensions-ai-temp": "^0.0.3"
   }
 }
