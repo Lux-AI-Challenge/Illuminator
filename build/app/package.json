@@ -12,7 +12,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "dimensions-ai-temp": "^0.0.3",
+    "cross-spawn": "^7.0.3",
+    "dimensions-ai-temp": "^0.0.5",
     "ssh2": "^1.5.0"
   }
 }

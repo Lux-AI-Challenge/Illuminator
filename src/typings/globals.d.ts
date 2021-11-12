@@ -17,6 +17,7 @@ interface Window {
     };
     dimensions: ExtractHandlers<Dimensions.Actions>;
     user: ExtractHandlers<User.Actions>;
+    system: ExtractHandlers<System.Actions>;
     ipcRenderer: {
       on(channel: string, func: (...args: any[]) => any): void;
       once(channel: string, func: (...args: any[]) => any): void;

@@ -1,9 +1,10 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
 import './control.global.scss';
+import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
 /**
  * Generic component. TODO probably split this up later
  */
@@ -40,6 +41,7 @@ const Control = () => {
   return (
     <div className="Control">
       <EnvProvider value={{ setEnv, env }}>
+        <SelectPythonInterpreter />
         <Button variant="contained" component="label">
           Select Environment
           <input type="file" hidden onChange={selectEnvironment} />

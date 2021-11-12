@@ -176,7 +176,7 @@ cpu-features@0.0.2:
   dependencies:
     nan "^2.14.1"
 
-cross-spawn@^7.0.2:
+cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -214,10 +214,10 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
-dimensions-ai-temp@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/dimensions-ai-temp/-/dimensions-ai-temp-0.0.3.tgz#40c0131ee706b20a512fcd75c8dc71bea10411b5"
-  integrity sha512-NnoqAASxg2bAKPidVqXEihiVL3F6ZYcPymomGpRLoCZskEg0WzUEhsvXGmJLU0hPvmKXc0rYICTiNMQIq4Wcjg==
+dimensions-ai-temp@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/dimensions-ai-temp/-/dimensions-ai-temp-0.0.5.tgz#2faa4431c14d8b5a6d8f4f2c9e89245855bcb2a3"
+  integrity sha512-QOboXFiUz/tEal90kfGGeJSWU2lQ+5oziKadTJlGX9FNf0h/gMrPM347yAb0HNvEWCijbmo2Y7fuOXtuM36u5A==
   dependencies:
     bcryptjs "^2.4.3"
     body-parser "^1.19.0"
