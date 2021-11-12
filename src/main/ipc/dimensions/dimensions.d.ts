@@ -1,4 +1,5 @@
 declare namespace Dimensions {
+  type Name = 'dim';
   interface Actions {
     MakeEnv: {
       in: {
@@ -26,6 +27,12 @@ declare namespace Dimensions {
       out: {
         final: $TSFIXME;
       };
+    };
+    CloseEnv: {
+      in: {
+        id: string;
+      };
+      out: void;
     };
   }
 }
