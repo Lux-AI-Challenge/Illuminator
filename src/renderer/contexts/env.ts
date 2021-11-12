@@ -4,7 +4,7 @@ import React from 'react';
 const EnvContext = React.createContext(
   {} as {
     env: string;
-    setEnv: (env: string) => any;
+    setEnv: (env: string) => $TSFIXME;
   }
 );
 

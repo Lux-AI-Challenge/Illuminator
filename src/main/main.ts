@@ -11,27 +11,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { setupDimensions } from './dimensions/index';
 import setupLogger from './utils/setupLogger';
-
-const store = new Store();
-
-// IPC listener
-ipcMain.on('electron-store-get', async (_event, val) => {
-  store.get(val);
-});
-ipcMain.on('electron-store-set', async (_event, key, val) => {
-  store.set(key, val);
-});
-
-// setup dimensions
-setupDimensions();
+import './ipc';
 
 export default class AppUpdater {
   constructor() {

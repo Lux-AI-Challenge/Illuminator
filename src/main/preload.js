@@ -13,17 +13,22 @@ const handlers = {
   dimensions: {
     // TODO: for all functions name "X", auto addd these handlers?
     // annonyingly all has to be functional due to serialization and no passing of functions, is there a better way?
-    makeEnv(data) {
-      return ipcRenderer.invoke('dim_makeEnv', data);
+    MakeEnv(data) {
+      return ipcRenderer.invoke('dim_MakeEnv', data);
     },
-    runEpisode(data) {
-      return ipcRenderer.invoke('dim_runEpisode', data);
+    RunEpisode(data) {
+      return ipcRenderer.invoke('dim_RunEpisode', data);
     },
-    closeEnv(data) {
-      return ipcRenderer.invoke('dim_closeEnv', data);
+    CloseEnv(data) {
+      return ipcRenderer.invoke('dim_CloseEnv', data);
     },
-    runSingleEpisode(data) {
-      return ipcRenderer.invoke('dim_runSingleEpisode', data);
+    RunSingleEpisode(data) {
+      return ipcRenderer.invoke('dim_RunSingleEpisode', data);
+    },
+  },
+  user: {
+    GetPreferences(data) {
+      return ipcRenderer.invoke('dim_GetPreferences', data);
     },
   },
   ipcRenderer: {
