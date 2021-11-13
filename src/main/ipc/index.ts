@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import ElectronStore from 'electron-store';
-import { setupSystem } from 'main/ipc/system';
+import { setupSystem } from './system';
 import { setupDimensions } from './dimensions/index';
 import { setupUser } from './user';
 
