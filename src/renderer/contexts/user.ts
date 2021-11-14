@@ -10,12 +10,6 @@ const UserContext = React.createContext(
   }
 );
 
-export const DEFAULT_USER_PREFERENCES: User.UserPreferences = {
-  env: '',
-  mostRecentEnvs: [],
-  pythonInterpreter: 'python',
-};
-
 export const UserProvider = UserContext.Provider;
 export const UserConsumer = UserContext.Consumer;
 export default UserContext;
