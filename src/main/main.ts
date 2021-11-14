@@ -27,8 +27,6 @@ export default class AppUpdater {
   }
 }
 
-console.log(app.getPath('userData'));
-
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {

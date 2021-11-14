@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 import * as UserActions from 'renderer/actions/user';
 import Control from 'renderer/components/Control';
-import UserContext, { DEFAULT_USER_PREFERENCES } from 'renderer/contexts/user';
+import UserContext from 'renderer/contexts/user';
 import { setup as ipcSetup } from 'renderer/ipc/setup';
 import './App.global.css';
 
@@ -28,9 +28,7 @@ const App = () => {
   const setUserPreferences = async (
     prefs: DeepPartial<User.UserPreferences>
   ) => {
-    console.log({ prefs });
     const newprefs = await UserActions.setUserPreferences(prefs);
-    console.log({ newprefs });
     setUserPreferencesState(newprefs);
     return newprefs;
   };
@@ -38,13 +36,12 @@ const App = () => {
     // start up code?
     UserActions.getUserPreferences()
       .then((prefs) => {
-        console.log({ prefs });
-        return setUserPreferences(prefs);
+        return setUserPreferencesState(prefs);
       })
       .catch(console.error);
   }, []);
   useEffect(() => {
-    console.log({ userPreferences });
+    console.log('changed', { userPreferences });
   }, [userPreferences]);
   return (
     <Router>

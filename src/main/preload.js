@@ -4,10 +4,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 const handlers = {
   store: {
     get(val) {
-      ipcRenderer.send('electron-store-get', val);
+      return ipcRenderer.invoke('electron-store-get', val);
     },
     set(property, val) {
-      ipcRenderer.send('electron-store-set', property, val);
+      return ipcRenderer.invoke('electron-store-set', property, val);
     },
   },
   dimensions: {
