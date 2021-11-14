@@ -28,7 +28,10 @@ const handlers = {
   },
   user: {
     GetPreferences(data) {
-      return ipcRenderer.invoke('dim_GetPreferences', data);
+      return ipcRenderer.invoke('user_GetPreferences', data);
+    },
+    SetPreferences(data) {
+      return ipcRenderer.invoke('user_SetPreferences', data);
     },
   },
   ipcRenderer: {

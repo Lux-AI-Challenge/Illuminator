@@ -9,11 +9,11 @@ export default (window: BrowserWindow) => {
   const oldErrLog = console.error;
   const oldLog = console.log;
   console.error = (...data: any[]) => {
-    oldErrLog(...data);
+    oldErrLog('[main]', ...data);
     window.webContents.send('stderr', ...data);
   };
   console.log = (...data: any[]) => {
-    oldLog(...data);
+    oldLog('[main]', ...data);
     window.webContents.send('stdout', ...data);
   };
 };
