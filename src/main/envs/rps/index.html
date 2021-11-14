@@ -1,0 +1,26 @@
+<html>
+  <style>
+    html {
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+        'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .game {
+      width: 500px;
+      height: 250px;
+      background-color: rgba(56, 51, 58, 0.2);
+    }
+  </style>
+  <body>
+    <h1>RPS</h1>
+    <h2 id="score-title">Score: 0, 0</h2>
+    <div class="game"></div>
+  </body>
+  <script>
+    window.addEventListener('message', (event) => {
+      console.log('data', event.data);
+      const scoreTitle = document.getElementById('score-title');
+      scoreTitle.textContent = `Score: ${event.data.info['player_0'].score} ${event.data.info['player_1'].score}`;
+      //TODO. do something with observations
+    });
+  </script>
+</html>
