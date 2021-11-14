@@ -214,10 +214,10 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
-dimensions-ai-temp@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/dimensions-ai-temp/-/dimensions-ai-temp-0.0.5.tgz#2faa4431c14d8b5a6d8f4f2c9e89245855bcb2a3"
-  integrity sha512-QOboXFiUz/tEal90kfGGeJSWU2lQ+5oziKadTJlGX9FNf0h/gMrPM347yAb0HNvEWCijbmo2Y7fuOXtuM36u5A==
+dimensions-ai-temp@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/dimensions-ai-temp/-/dimensions-ai-temp-0.0.7.tgz#81ce62e11f23840c4a902f401ee6a59868c40a64"
+  integrity sha512-g+uoCm48xteM1XBixLC2ttAFkXIm4JTKniPHUnL+/guNPEk8sRfMxa+10nYZI+Q/ScsIFAtXpi3SOoJiFWPQdg==
   dependencies:
     bcryptjs "^2.4.3"
     body-parser "^1.19.0"
