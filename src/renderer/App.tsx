@@ -22,9 +22,8 @@ const Hello = () => {
 };
 
 const App = () => {
-  const [userPreferences, setUserPreferencesState] = useState(
-    DEFAULT_USER_PREFERENCES
-  );
+  const [userPreferences, setUserPreferencesState] =
+    useState<User.UserPreferences>();
   const setUserPreferences = async (
     prefs: DeepPartial<User.UserPreferences>
   ) => {
