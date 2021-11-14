@@ -10,6 +10,31 @@ declare namespace Dimensions {
         id: string;
       };
     };
+    IntializeAgents: {
+      in: {
+        agentPaths: string[];
+      };
+      out: {
+        agentIds: string[];
+      };
+    };
+    EnvRegisterAgents: {
+      in: {
+        envId: string;
+        agentIds: string[];
+      };
+      out: void;
+    };
+    /**
+     * Step through environment with the given agent Ids.
+     */
+    EnvStepWithAgents: {
+      in: {
+        agentIds: string[];
+        envId: string;
+      };
+      out: $TSFIXME; // env return state;
+    };
     RunEpisode: {
       in: {
         /** id of env */

@@ -1,5 +1,7 @@
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
+import { Agent } from 'dimensions-ai-temp/lib/main/Agent';
+import { Engine } from 'dimensions-ai-temp/lib/main/Engine';
 import { handleFunc } from '../wrapper';
 import * as pipeline from './pipeline';
 
@@ -33,6 +35,34 @@ export const setupDimensions = (store: Store) => {
         return eps.results;
       }
       throw Error(`Environment with id ${data.id} not found!`);
+    }
+  );
+
+  handleFunc<Dimensions.Actions, 'IntializeAgents'>(
+    'dim_IntializeAgents',
+    async (_event, data) => {
+      const tempAgentIDs: Set<string> = new Set();
+      const runAgents: Agent[] = [];
+      data.agentPaths.forEach((agent) => {
+        const newAgent = dim.addAgent({ agent });
+        tempAgentIDs.add(newAgent.id);
+        runAgents.push(newAgent);
+      });
+      return {
+        agentIds: runAgents.map((a) => a.id),
+      };
+    }
+  );
+
+  handleFunc<Dimensions.Actions, 'EnvRegisterAgents'>(
+    'dim_EnvRegisterAgents',
+    async (_event, data) => {
+      const env = Environment.envmap.get(data.envId);
+      if (env) {
+        await env.registerAgents(data.agentIds);
+      } else {
+        throw Error(`Environment with id ${data.envId} not found!`);
+      }
     }
   );
 
