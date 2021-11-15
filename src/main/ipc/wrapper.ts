@@ -1,5 +1,5 @@
 import { ipcMain, ipcRenderer } from 'electron';
-import type { AbstractApi, Message, Payload } from './types';
+import type { MainProcessApi, Message, Payload } from './types';
 
 /**
  * lightweight wrapper for `ipcRenderer.invoke` to provide typing
@@ -7,7 +7,10 @@ import type { AbstractApi, Message, Payload } from './types';
  * @param data the data to pass into the function
  * @returns the result of the function
  */
-export const invokeFunc = <T extends AbstractApi, K extends keyof T['actions']>(
+export const invokeFunc = <
+  T extends MainProcessApi,
+  K extends keyof T['actions']
+>(
   message: Message<T, K>,
   data: Payload<T, K>
 ) => ipcRenderer.invoke(message, data);
@@ -53,16 +56,35 @@ export const invokeFunc = <T extends AbstractApi, K extends keyof T['actions']>(
 ///
 
 /**
- * Wraps try catch around to return errors to renderer instead of the main process
+ * black magic sorcery that, given a function `f(...args, optionalArg: T) => res`,
+ * allows the function to be invoked as either `f(...args)` or `f(...args, Default)` when `T` is of type Optional.
+ * if used, `f` must be typed as `(...args, ...[optionalArg]: OptionalArg<T, Optional, Default>) => res`.
+ * JSDoc comments become less useful when using this type, though, since the argname gets mangled
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type OptionalArg<T, Optional = undefined & never, Default = undefined> = (
+  T extends Optional ? [] | [Default] : [T]
+) extends [infer L]
+  ? [L]
+  : [] | [Default];
+
+/**
+ * Wraps try catch around to return errors to renderer instead of the main process
+ *
+ * @todo types are very ugly. dunno if theres a better way to do this that avoids having to explicitly specify the generic types while getting all the proper type hinting
+ */
 export const handleFunc = async <
-  T extends AbstractApi,
-  K extends keyof T['actions']
+  T = MainProcessApi,
+  K = T extends MainProcessApi ? keyof T['actions'] : never
 >(
-  api: T,
-  action: K & string,
-  ctx: Parameters<T['actions'][K]>[0]
+  api: T extends MainProcessApi ? T : never,
+  action: T extends MainProcessApi
+    ? (K extends keyof T['actions'] ? K : keyof typeof api['actions']) & string
+    : never,
+  ...[ctx]: OptionalArg<
+    T extends MainProcessApi
+      ? Parameters<T['actions'][typeof action]>[0]
+      : never
+  >
 ) => {
   const func = `${api.prefix}_${action}`;
   const oldcb = api.actions[action](ctx);

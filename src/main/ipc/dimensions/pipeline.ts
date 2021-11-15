@@ -3,19 +3,15 @@
  */
 
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
-import DimensionsApi, { Dimensions } from './dimensions';
+import DimensionsApi from './dimensions';
 import { handleFunc } from '../wrapper';
 
 export const setup = (dim: Dimension, store: Store) => {
   /**
    * Auxillary
    */
-  handleFunc<Dimensions, 'runSingleEpisode'>(
-    DimensionsApi,
-    'runSingleEpisode',
-    {
-      dim,
-      store,
-    }
-  );
+  handleFunc(DimensionsApi, 'runSingleEpisode', {
+    dim,
+    store,
+  });
 };

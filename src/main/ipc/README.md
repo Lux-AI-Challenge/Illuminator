@@ -48,10 +48,10 @@ They should then also have their function handlers and invokers registered.
 Every handler is declared as follows
 
 ```js
-handleFunc < Api, Action > (api, action, ctx);
+handleFunc(api, action, ctx);
 ```
 
-where `api` is the API we wish to interact with, `action` is the string describing the function to invoke in `api`, and `ctx` the context for the action.
+where `api` is the API we wish to interact with, `action` is the string describing the function to invoke in `api`, and `ctx` the context for the action. Subsequent parameters should be automatically typed based on the previous ones.
 
 Register a handler for a function by calling `handleFunc` along the `main` program execution path, ideally as soon as possible. In general, try to register handlers for the same API in close proximity with each other.
 

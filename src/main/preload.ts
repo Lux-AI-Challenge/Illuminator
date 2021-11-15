@@ -82,12 +82,9 @@ const wrapErrors = (handlers: any) => {
    * main process can still throw errors and that will then just raise an error on the main process (which should never happen).
    */
   for (const key in handlers) {
-    if (!(handlers[key] instanceof Function)) {
-      wrapErrors(handlers[key]);
-    } else {
-      // is a function
+    if (handlers[key] instanceof Function) {
       const oldfunc = handlers[key];
-      handlers[key] = async (...args: Parameters<typeof oldfunc>) => {
+      const newfunc = async (...args: Parameters<typeof oldfunc>) => {
         const res = await oldfunc(...args);
         if (res instanceof Error) {
           throw res;
@@ -95,6 +92,9 @@ const wrapErrors = (handlers: any) => {
           return res;
         }
       };
+      handlers[key] = newfunc;
+    } else {
+      wrapErrors(handlers[key]);
     }
   }
 };
