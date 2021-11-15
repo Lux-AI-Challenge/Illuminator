@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
-import './control.global.scss';
 import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
+import { Dimensions } from 'main/ipc/dimensions/dimensions';
+import styles from './control.scss';
 /**
  * Generic component. TODO probably split this up later
  */
@@ -12,7 +13,7 @@ import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter
 const Control = () => {
   const [env, setEnv] = useState('');
   const [matchResult, setMatchResult] = useState<
-    Dimensions.Actions['RunSingleEpisode']['out'] // TODO: maybe extract some of these input/ouput types to somewhere else?
+    Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
   >({
     final: 'abc',
   });
@@ -28,29 +29,42 @@ const Control = () => {
       });
   };
   // TODO move this out of this component
-  const selectEnvironment = (e: React.FormEvent<HTMLInputElement>) => {
+  const selectEnvironment = async () => {
     // window.electron.store.get(STORE.ENV).then(console.log)
     // console.log({oldenv});
-    const { files } = e.currentTarget;
-    if (files && files.length > 0) {
-      const newEnv = files[0].path;
-      setEnv(newEnv);
+    const filepath = await window.electron.system.fileSelect({
+      title: 'Python env file',
+      message: 'test message',
+      properties: ['openFile'],
+      filters: [
+        { name: 'All files', extensions: ['*'] },
+        { name: 'Python files', extensions: ['py'] },
+      ],
+    });
+    console.log(filepath);
+    if (filepath) {
+      // const newEnv = filepath;
+      setEnv(filepath);
       // window.electron.store.set(STORE.ENV, newEnv);
     }
   };
   return (
-    <div className="Control">
+    <div className={styles.Control}>
       <EnvProvider value={{ setEnv, env }}>
         <SelectPythonInterpreter />
-        <Button variant="contained" component="label">
+        <Button
+          variant="contained"
+          component="label"
+          onClick={selectEnvironment}
+        >
           Select Environment
-          <input type="file" hidden onChange={selectEnvironment} />
         </Button>
+        <div>env file: {env || ''}</div>
         <Button onClick={runMatch} variant="contained" color="primary">
           Run Match
         </Button>
         {matchResult && (
-          <div className="result-box">
+          <div className={styles['result-box']}>
             <ReactJson src={matchResult} />
           </div>
         )}
