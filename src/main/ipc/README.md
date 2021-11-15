@@ -1,44 +1,79 @@
 # IPC Handlers
 
-Files here are for setting up all the IPC handlers for communication to and from the main process and renderer process.
+Files here are for setting up all communication to and from the main process and renderer process.
 
 Some important notes on typings used here.
 
-Every handler is declared as follows
+String _messages_ are sent between the main and renderer processes to communicate.
 
-```
-handleFunc<Namespace.Actions['GetPreferences']>('user_getPreferences', async (_event, data) => {
-  return store.get('store_user_preferences');
-});
-```
+The _main_ process _handles_ messages, while the _renderer_ process _invokes_ them.
 
-Where `Namespace.Actions` is a globally defined interface. See `ipc/user/user.d.ts` as an example.
+## APIs
 
-To add a new IPC handler, first create a new property e.g. `GetID` under a namespace e.g. `User` and the `Actions` interface
+Domains of functions are namespaced under constant singleton `Api` objects conforming to the type
 
-Then we write
-
-```
-declare namespace User {
-  interface Actions {
-    GetID: {
-      in: void; // specify no input used
-      out: string; // specify output of action is a string
-    }
+```js
+{
+  prefix: string;
+  actions: {
+    [action: string]: (context) => (IPCMainInvokeEvent, data) => Promise
   }
 }
 ```
 
-If using a new namespace, we need to register it to the ipc renderer typings in typings/globa.d.ts as so.
+where each prefix is unique, and `actions` contains a list mapping `action` strings to functions. See `main/ipc/dimensions/dimensions.d.ts` as an example.
 
-```
+Each function takes a `context` object providing any additional relevant data needed, and returns a callback that can be passed into `ipcMain.invoke()`.
+
+To add a new function, create a new file for it in `ipc/[api]/actions/myFunction.ts` and export it in `main/ipc/[api]/actions/index.ts`. In order to actually use the function, we will also need to register a handler and invoker for it (discussed later).
+
+Messages take the form `${api_prefix}_${api_action}`.
+
+New APIs should be registered to the IPC renderer typings in `typings/global.d.ts` as so.
+
+```js
 interface Window {
   electron: {
     ...
-    user: ExtractHandlers<User.Actions>;
+    user: Handlers<User>;
     ...
   };
 }
 ```
 
-This is then populated in the main process typings and renderer process typings in addition to the `ipcRenderer` also registering this as well
+They should then also have their function handlers and invokers registered.
+
+## Handlers
+
+Every handler is declared as follows
+
+```js
+handleFunc < Api, Action > (api, action, ctx);
+```
+
+where `api` is the API we wish to interact with, `action` is the string describing the function to invoke in `api`, and `ctx` the context for the action.
+
+Register a handler for a function by calling `handleFunc` along the `main` program execution path, ideally as soon as possible. In general, try to register handlers for the same API in close proximity with each other.
+
+## Invokers
+
+Every invoker is declared as follows
+
+```js
+invokeFunc < Api, Action > (message, data);
+```
+
+where `message` is the string `${api_prefix}_${api_action}` the corresponding handler is listening to. Both `message` and `data` should be automatically typed.
+
+Invokers are exposed in `main/preload.ts` as so.
+
+```js
+const handlers = {
+  ...
+  user: {
+    getPreferences(data) {
+      return invokeFunc <User, 'getPreferences'> ('user_getPreferences', data);
+    }
+  }
+}
+```
