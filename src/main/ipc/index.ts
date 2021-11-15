@@ -2,7 +2,7 @@ import path from 'path';
 import { app, ipcMain } from 'electron';
 import ElectronStore from 'electron-store';
 import { setupSystem } from './system';
-import { setupDimensions } from './dimensions/index';
+import { setupDimensions } from './dimensions';
 import { setupUser } from './user';
 
 app.setPath(
