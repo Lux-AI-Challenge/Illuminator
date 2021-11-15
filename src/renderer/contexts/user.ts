@@ -1,12 +1,13 @@
 import React from 'react';
+import type { UserPreferences } from 'main/ipc/user/preferences';
 
 // set UserContext and add type
 const UserContext = React.createContext(
   {} as {
-    userPreferences: User.UserPreferences;
+    userPreferences: UserPreferences;
     setUserPreferences: (
-      prefs: DeepPartial<User.UserPreferences>
-    ) => Promise<User.UserPreferences>;
+      prefs: DeepPartial<UserPreferences>
+    ) => Promise<UserPreferences>;
   }
 );
 
