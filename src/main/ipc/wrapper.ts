@@ -61,9 +61,11 @@ export const invokeFunc = <
  * if used, `f` must be typed as `(...args, ...[optionalArg]: OptionalArg<T, Optional, Default>) => res`.
  * JSDoc comments become less useful when using this type, though, since the argname gets mangled
  */
-type OptionalArg<T, Optional = undefined & never, Default = undefined> = (
-  T extends Optional ? [] | [Default] : [T]
-) extends [infer L]
+type OptionalArg<
+  T,
+  Optional = undefined & void & never,
+  Default = undefined
+> = (T extends Optional ? [] | [Default] : [T]) extends [infer L]
   ? [L]
   : [] | [Default];
 
