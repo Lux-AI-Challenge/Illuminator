@@ -3,13 +3,13 @@ export const hGroups = {
   1: 'left-center',
   2: 'right-center',
   3: 'right',
-};
+} as const;
 export const vGroups = {
   0: 'top',
   1: 'top-middle',
   2: 'bottom-middle',
   3: 'bottom',
-};
+} as const;
 
 export interface GridSectionProps {
   hStart: keyof typeof hGroups;
