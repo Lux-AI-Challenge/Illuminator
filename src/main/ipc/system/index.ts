@@ -1,8 +1,7 @@
-import spawn from 'cross-spawn';
 import { handleFunc } from '../wrapper';
 import SystemApi from './system';
 
-export const setupSystem = (store: Store) => {
+export const setupSystem = () => {
   handleFunc(SystemApi, 'getPythonInterpreters');
   handleFunc(SystemApi, 'fileSelect');
 };
