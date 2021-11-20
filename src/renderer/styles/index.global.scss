@@ -1,0 +1,24 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+@import './variables.global.scss';
+
+html {
+  font-size: 16px;
+
+  & * {
+    box-sizing: border-box;
+  }
+}
+
+body {
+  position: relative;
+  color: white;
+  background: var(--background-color);
+  height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  overflow-y: hidden;
+}

@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
+
+import type { UserPreferences } from 'main/ipc/user/preferences';
+
 import * as UserActions from 'renderer/actions/user';
-import Control from 'renderer/components/Control';
 import UserContext from 'renderer/contexts/user';
 import { setup as ipcSetup } from 'renderer/ipc/setup';
-import './App.global.css';
+import Illuminator from 'renderer/pages/illuminator';
 
-const Hello = () => {
+import './styles/index.global.scss';
+
+const App = () => {
   useEffect(() => {
     // setup code goes here
     ipcSetup();
   }, []);
-  return (
-    <div>
-      <h1>Illuminator</h1>
-      <div>
-        <Control />
-      </div>
-    </div>
-  );
-};
 
-const App = () => {
-  const [userPreferences, setUserPreferencesState] =
-    useState<User.UserPreferences>({} as User.UserPreferences);
-  const setUserPreferences = async (
-    prefs: DeepPartial<User.UserPreferences>
-  ) => {
+  const [userPreferences, setUserPreferencesState] = useState<UserPreferences>(
+    {} as UserPreferences
+  );
+  const setUserPreferences = async (prefs: DeepPartial<UserPreferences>) => {
     const newprefs = await UserActions.setUserPreferences(prefs);
     setUserPreferencesState(newprefs);
     return newprefs;
   };
+
   useEffect(() => {
     // start up code?
     UserActions.getUserPreferences()
@@ -39,14 +33,16 @@ const App = () => {
       })
       .catch(console.error);
   }, []);
+
   useEffect(() => {
     console.log('changed', { userPreferences });
   }, [userPreferences]);
+
   return (
     <Router>
       <UserContext.Provider value={{ setUserPreferences, userPreferences }}>
         <Switch>
-          <Route path="/" component={Hello} />
+          <Route path="/" component={Illuminator} />
         </Switch>
       </UserContext.Provider>
     </Router>

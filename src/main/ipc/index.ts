@@ -2,7 +2,7 @@ import path from 'path';
 import { app, ipcMain } from 'electron';
 import ElectronStore from 'electron-store';
 import { setupSystem } from './system';
-import { setupDimensions } from './dimensions/index';
+import { setupDimensions } from './dimensions';
 import { setupUser } from './user';
 
 app.setPath(
@@ -14,7 +14,7 @@ const store = new ElectronStore() as Store;
 // setup dimensions
 setupDimensions(store);
 setupUser(store);
-setupSystem(store);
+setupSystem();
 
 // IPC listener
 ipcMain.handle('electron-store-get', async (_event, val) => {

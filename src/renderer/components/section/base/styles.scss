@@ -1,0 +1,23 @@
+.base {
+  background-color: var(--surface-color);
+  border-radius: 8px;
+}
+
+$sides: start, end;
+$h-boundaries: left, left-center, right-center, right;
+$v-boundaries: top, top-middle, bottom-middle, bottom;
+
+@each $side in $sides {
+  .#{$side} {
+    @each $hb in $h-boundaries {
+      &-#{$hb} {
+        grid-column-#{$side}: var(--#{$hb});
+      }
+    }
+    @each $vb in $v-boundaries {
+      &-#{$vb} {
+        grid-row-#{$side}: var(--#{$vb});
+      }
+    }
+  }
+}

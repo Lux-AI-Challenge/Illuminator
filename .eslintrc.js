@@ -5,6 +5,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
+    'react/require-default-props': 'off', // too verbose vs just default parameters
   },
   parserOptions: {
     ecmaVersion: 2020,
