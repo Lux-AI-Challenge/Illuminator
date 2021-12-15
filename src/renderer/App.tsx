@@ -9,6 +9,7 @@ import { setup as ipcSetup } from 'renderer/ipc/setup';
 import Illuminator from 'renderer/pages/illuminator';
 
 import './styles/index.global.scss';
+import { deepMerge } from 'main/utils/deepMerge';
 
 const App = () => {
   useEffect(() => {
@@ -19,9 +20,10 @@ const App = () => {
   const [userPreferences, setUserPreferencesState] = useState<UserPreferences>(
     {} as UserPreferences
   );
-  const setUserPreferences = async (prefs: DeepPartial<UserPreferences>) => {
-    const newprefs = await UserActions.setUserPreferences(prefs);
+  const setUserPreferences = (prefs: DeepPartial<UserPreferences>) => {
+    const newprefs = deepMerge(userPreferences, prefs);
     setUserPreferencesState(newprefs);
+    UserActions.setUserPreferences(newprefs); // TODO: woudl this be problematic with asycn out of updates?
     return newprefs;
   };
 

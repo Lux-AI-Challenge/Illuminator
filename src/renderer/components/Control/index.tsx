@@ -1,17 +1,23 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { runSingleEpisode } from 'renderer/actions/engine/episode';
 import { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
 import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
 import { Dimensions } from 'main/ipc/dimensions/dimensions';
+import UserContext from 'renderer/contexts/user';
 import styles from './control.scss';
+
 /**
  * Generic component. TODO probably split this up later
  */
 
 const Control = () => {
-  const [env, setEnv] = useState('');
+  const { userPreferences, setUserPreferences } = useContext(UserContext);
+  const { env } = userPreferences;
+  const setEnv = (filepath: string) => {
+    setUserPreferences({ env: filepath });
+  };
   const [matchResult, setMatchResult] = useState<
     Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
   >({
