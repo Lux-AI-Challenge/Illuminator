@@ -2,10 +2,6 @@ import type { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import type { Agent } from 'dimensions-ai-temp/lib/main/Agent';
 import type { Action } from 'main/ipc/types';
 
-interface Context {
-  dim: Dimension;
-}
-
 interface Data {
   agentPaths: string[];
 }

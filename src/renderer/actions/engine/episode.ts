@@ -18,3 +18,8 @@ export const runSingleEpisode = async (
     seed,
   });
 };
+
+export const getEnvMetaData = async (env: string) => {
+  const envData = await window.electron.dimensions.makeEnv({ env });
+  return envData.metaData;
+};

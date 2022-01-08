@@ -5,6 +5,21 @@ const EnvContext = React.createContext(
   {} as {
     env: string;
     setEnv: (env: string) => $TSFIXME;
+    runEpisode: (
+      env: string,
+      agents: string[],
+      live: boolean,
+      seed?: number
+    ) => Promise<{
+      html?: string;
+      postdata: string;
+    }>;
+    createEpisode: (env: string) => Promise<{
+      episodeId: string;
+    }>;
+    envStep: (env: string) => Promise<{
+      postdata: string;
+    }>;
   }
 );
 

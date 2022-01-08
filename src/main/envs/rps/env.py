@@ -6,6 +6,7 @@ from pettingzoo.utils import wrappers
 from pettingzoo.utils.conversions import parallel_wrapper_fn
 import os
 
+
 def env(**kwargs):
     env = raw_env(**kwargs)
     # env = wrappers.AssertOutOfBoundsWrapper(env)
@@ -21,7 +22,7 @@ class raw_env(AECEnv):
     Expandable environment to rock paper scissors lizard spock action_6 action_7 ...
     The observation is simply the last opponent action."""
 
-    metadata = {'render.modes': ['human', 'rgb_array'], "name": "rps_v2", "html": "./index.html"}
+    metadata = {"render.modes": ["human", "rgb_array"], "name": "rps_v2", "html": "./index.html"}
 
     def __init__(self, num_actions=3, max_cycles=15):
         self.max_cycles = max_cycles
@@ -34,7 +35,7 @@ class raw_env(AECEnv):
             # expand to lizard, spock for first extra action pair
             self._moves.extend(("SPOCK", "LIZARD"))
             for action in range(num_actions - 5):
-                self._moves.append("ACTION_"f'{action + 6}')
+                self._moves.append("ACTION_" f"{action + 6}")
         # none is last possible action, to satisfy discrete action space
         self._moves.append("None")
         self._none = num_actions
@@ -57,7 +58,7 @@ class raw_env(AECEnv):
         self.rewards = {agent: 0 for agent in self.agents}
         self._cumulative_rewards = {agent: 0 for agent in self.agents}
         self.dones = {agent: False for agent in self.agents}
-        self.infos = {agent: {'score': 0} for agent in self.agents}
+        self.infos = {agent: {"score": 0} for agent in self.agents}
 
         self.state = {agent: self._none for agent in self.agents}
         self.observations = {agent: self._none for agent in self.agents}
@@ -66,6 +67,7 @@ class raw_env(AECEnv):
 
     def render(self, mode="human"):
         return self.state
+
     def observe(self, agent):
         # observation of one agent is the previous state of the other
         return np.array(self.observations[agent])
@@ -81,18 +83,17 @@ class raw_env(AECEnv):
 
         if self.dones[self.agent_selection]:
             return self._was_done_step(action)
-        
-        if not ((
-            action is None and self.dones[self.agent_selection]
-        ) or self.action_spaces[self.agent_selection].contains(
-            action
-        )):
+
+        if not (
+            (action is None and self.dones[self.agent_selection])
+            or self.action_spaces[self.agent_selection].contains(action)
+        ):
             # validate action
             print(f"action is not in action space: {action}", file=sys.stderr)
             # if invalid action, set action as none and mark this agent as being done.
             self.dones[self.agent_selection] = True
             action = None
-        
+
         agent = self.agent_selection
 
         self.state[self.agent_selection] = action
@@ -105,11 +106,12 @@ class raw_env(AECEnv):
 
                 for i in self.agents:
                     self.observations[i] = self.state[self.agents[1 - self.agent_name_mapping[i]]]
-                    score = self.infos[i]['score'] + self.rewards[i]
+                    score = self.infos[i]["score"] + self.rewards[i]
                     # if already marked done, agent failed early and we set their score to 0.
-                    if self.dones[i]: score = -1
+                    if self.dones[i]:
+                        score = -1
                     self.infos[i] = dict(score=score)
-                    
+
                     # end game by marking all as done
                     self.dones[i] = True
                 return
@@ -140,19 +142,20 @@ class raw_env(AECEnv):
             # observe the current state
             for i in self.agents:
                 self.observations[i] = self.state[self.agents[1 - self.agent_name_mapping[i]]]
-                old_score = self.infos[i]['score']
+                old_score = self.infos[i]["score"]
                 self.infos[i] = dict(score=old_score + self.rewards[i])
         else:
             self.state[self.agents[1 - self.agent_name_mapping[agent]]] = self._none
 
             self._clear_rewards()
-        
 
         self._cumulative_rewards[self.agent_selection] = 0
         self.agent_selection = self._agent_selector.next()
         self._accumulate_rewards()
 
+
 if __name__ == "__main__":
+
     def read_input():
         """
         Reads input from stdin
@@ -161,6 +164,7 @@ if __name__ == "__main__":
             return input()
         except EOFError as eof:
             raise SystemExit(eof)
+
     def output(data):
         json.dump(data, sys.stdout)
         sys.stdout.write("\n")
@@ -170,32 +174,40 @@ if __name__ == "__main__":
 
     def serialize_np(arr):
         return arr.tolist()
+
     def serialize_ma_obs(dict_obs):
         return {agent: serialize_np(dict_obs[agent]) for agent in dict_obs}
+
     def serialize_ma_raw(dict_obs):
         return {agent: dict_obs[agent] for agent in dict_obs}
 
     agent_id_to_player_id = {}
-    while (True):
+    while True:
         inputs = read_input()
-        data = json.loads(inputs) # load into a dict with information
+        data = json.loads(inputs)  # load into a dict with information
         input_type = data["type"]
 
         if input_type == "init":
             args = data["envConfigs"]
-            if args is None: args = {}
+            if args is None:
+                args = {}
             env = parallel_env(**args)
             output(env.metadata)
         elif input_type == "step":
-            observations, rewards, dones, infos = env.step(data['actions'])
-            serialized = dict(observations=serialize_ma_obs(observations), rewards=serialize_ma_raw(rewards), dones=serialize_ma_raw(dones), infos=serialize_ma_raw(infos))
+            observations, rewards, dones, infos = env.step(data["actions"])
+            serialized = dict(
+                observations=serialize_ma_obs(observations),
+                rewards=serialize_ma_raw(rewards),
+                dones=serialize_ma_raw(dones),
+                infos=serialize_ma_raw(infos),
+            )
             out = dict()
             for k in observations.keys():
-                obs = serialized['observations'][k]
-                reward = serialized['rewards'][k]
-                done = serialized['dones'][k]
-                info = serialized['infos'][k]
-                out[k] = dict(obs=obs,reward=reward,done=done,info=info, player_id=k)
+                obs = serialized["observations"][k]
+                reward = serialized["rewards"][k]
+                done = serialized["dones"][k]
+                info = serialized["infos"][k]
+                out[k] = dict(obs=obs, reward=reward, done=done, info=info, player_id=k)
             output(out)
         elif input_type == "reset":
             state = data["state"]
@@ -203,7 +215,7 @@ if __name__ == "__main__":
             out = dict()
             serialized = dict(observations=serialize_ma_obs(observations))
             for k in observations.keys():
-                obs = serialized['observations'][k]
+                obs = serialized["observations"][k]
                 out[k] = dict(obs=obs)
             output(out)
         elif input_type == "seed":
@@ -212,7 +224,7 @@ if __name__ == "__main__":
             output(obs)
         elif input_type == "register_agents":
             # can only register at the start, expect all agent ids first. Input here should not require validation
-            ids = data['ids']
+            ids = data["ids"]
             assert len(ids) == 2
             output(dict(ids=["player_0", "player_1"]))
         elif input_type == "close":
@@ -220,4 +232,3 @@ if __name__ == "__main__":
         elif input_type == "render":
             state = env.render()
             output(dict(render=state))
-            

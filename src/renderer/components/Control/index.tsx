@@ -1,7 +1,10 @@
 import { Button } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
-import { runSingleEpisode } from 'renderer/actions/engine/episode';
-import { EnvProvider } from 'renderer/contexts/env';
+import {
+  getEnvMetaData,
+  runSingleEpisode,
+} from 'renderer/actions/engine/episode';
+import EnvContext, { EnvProvider } from 'renderer/contexts/env';
 import ReactJson from 'react-json-view';
 import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
 import { Dimensions } from 'main/ipc/dimensions/dimensions';
@@ -14,7 +17,7 @@ import styles from './control.scss';
 
 const Control = () => {
   const { userPreferences, setUserPreferences } = useContext(UserContext);
-  const { env } = userPreferences;
+  const { env, runEpisode } = useContext(EnvContext);
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
@@ -23,16 +26,18 @@ const Control = () => {
   >({
     final: 'abc',
   });
+
   const runMatch = () => {
-    runSingleEpisode(env, [], 0)
-      .then((res) => {
-        console.log({ res });
-        setMatchResult(res);
-        return res;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    runEpisode(env, [], true, 0);
+    // runSingleEpisode(env, [], 0)
+    //   .then((res) => {
+    //     console.log({ res });
+    //     setMatchResult(res);
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
   // TODO move this out of this component
   const selectEnvironment = async () => {
@@ -52,29 +57,24 @@ const Control = () => {
       // const newEnv = filepath;
       setEnv(filepath);
       // window.electron.store.set(STORE.ENV, newEnv);
+      const metaData = await getEnvMetaData(filepath);
+      console.log({ metaData });
     }
   };
   return (
     <div className={styles.Control}>
-      <EnvProvider value={{ setEnv, env }}>
-        <SelectPythonInterpreter />
-        <Button
-          variant="contained"
-          component="label"
-          onClick={selectEnvironment}
-        >
-          Select Environment
-        </Button>
-        <div>env file: {env || ''}</div>
-        <Button onClick={runMatch} variant="contained" color="primary">
-          Run Match
-        </Button>
-        {matchResult && (
-          <div className={styles['result-box']}>
-            <ReactJson src={matchResult} />
-          </div>
-        )}
-      </EnvProvider>
+      <Button variant="contained" component="label" onClick={selectEnvironment}>
+        Select Environment
+      </Button>
+      <div>env file: {env || ''}</div>
+      <Button onClick={runMatch} variant="contained" color="primary">
+        Run Match
+      </Button>
+      {matchResult && (
+        <div className={styles['result-box']}>
+          <ReactJson src={matchResult} />
+        </div>
+      )}
     </div>
   );
 };

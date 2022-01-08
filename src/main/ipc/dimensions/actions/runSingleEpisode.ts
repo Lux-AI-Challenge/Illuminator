@@ -1,11 +1,7 @@
 import type { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
+import { Context } from 'main/ipc/dimensions';
 import type { Action } from 'main/ipc/types';
-
-interface Context {
-  dim: Dimension;
-  store: Store;
-}
 
 interface Data {
   env: string;

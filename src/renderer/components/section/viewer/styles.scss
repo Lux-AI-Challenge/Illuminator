@@ -1,5 +1,6 @@
 .viewer {
-  background-color: inherit;
+  // background-color: inherit;
+  background-color: var(--surface-color);
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

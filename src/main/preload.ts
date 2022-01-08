@@ -61,6 +61,9 @@ const handlers: Window['electron'] = {
     fileSelect(data) {
       return invokeFunc<System, 'fileSelect'>('sys_fileSelect', data);
     },
+    readFile(data) {
+      return invokeFunc<System, 'readFile'>('sys_readFile', data);
+    },
   },
   ipcRenderer: {
     on(channel, func) {
