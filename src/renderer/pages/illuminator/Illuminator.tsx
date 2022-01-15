@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from 'react';
 import Viewer from 'renderer/components/section/viewer';
 import Base from 'renderer/components/section/base';
@@ -16,9 +17,9 @@ const Illuminator = () => {
   const [html, setHtml] = useState('');
   const runEpisode = async (
     envFile: string, // change to env name
-    agents: string[],
-    live: boolean,
-    seed?: number
+    _agents: string[],
+    _live: boolean,
+    _seed?: number
   ) => {
     const envData = await window.electron.dimensions.makeEnv({ env: envFile });
     const htmlPath = path.join(path.dirname(envFile), envData.metaData.html);

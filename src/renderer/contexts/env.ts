@@ -14,12 +14,12 @@ const EnvContext = React.createContext(
       html?: string;
       postdata: string;
     }>;
-    createEpisode: (env: string) => Promise<{
-      episodeId: string;
-    }>;
-    envStep: (env: string) => Promise<{
-      postdata: string;
-    }>;
+    // createEpisode: (env: string) => Promise<{
+    //   episodeId: string;
+    // }>;
+    // envStep: (env: string) => Promise<{
+    //   postdata: string;
+    // }>;
   }
 );
 

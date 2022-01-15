@@ -1,4 +1,3 @@
-import { dialog } from 'electron';
 import type { Action } from 'main/ipc/types';
 import fs from 'fs';
 

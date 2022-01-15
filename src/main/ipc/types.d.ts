@@ -1,5 +1,6 @@
 import type { IpcMainInvokeEvent } from 'electron';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Action<Data = any, Result = any, Context = any> = (
   ctx: Context
 ) => (_event: IpcMainInvokeEvent, data: Data) => Promise<Result>;

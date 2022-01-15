@@ -1,12 +1,11 @@
 import { Context } from 'main/ipc/dimensions/context';
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { handleFunc } from '../wrapper';
-import * as pipeline from './pipeline';
 import DimensionsApi from './dimensions';
 
 export const setupDimensions = (store: Store) => {
   const dim = new Dimension();
-  pipeline.setup(dim, store);
+  // pipeline.setup(dim, store);
   const ctx: Context = {
     dim,
     data: { envs: new Map(), envNameToEnvs: new Map() },

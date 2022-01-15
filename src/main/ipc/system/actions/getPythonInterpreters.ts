@@ -4,9 +4,8 @@ export type Data = void;
 
 export type Result = string[];
 
-export const getPythonInterpreters: Action<Data, Result> =
-  () => async (_event) => {
-    // execSync('')
-    // TODO:
-    return [];
-  };
+export const getPythonInterpreters: Action<Data, Result> = () => async () => {
+  // execSync('')
+  // TODO:
+  return [];
+};

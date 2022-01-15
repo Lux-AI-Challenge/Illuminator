@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type Electronstore from 'electron-store';
 import type { Dimensions } from 'main/ipc/dimensions/dimensions';
 import type { System } from 'main/ipc/system/system';
