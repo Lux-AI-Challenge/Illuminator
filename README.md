@@ -19,3 +19,7 @@ externals / polyfill things
 Note, stylesheets must be named \*.global.scss
 
 Whenever a change is made to IPC, rebuild main
+
+## faq...
+
+make sure to update version before publishing!

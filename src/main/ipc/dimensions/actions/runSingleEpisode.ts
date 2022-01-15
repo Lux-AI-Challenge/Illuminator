@@ -1,6 +1,6 @@
 import type { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
-import { Context } from 'main/ipc/dimensions';
+import { Context } from 'main/ipc/dimensions/context';
 import type { Action } from 'main/ipc/types';
 
 interface Data {
