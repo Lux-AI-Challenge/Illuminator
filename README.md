@@ -23,3 +23,6 @@ Whenever a change is made to IPC, rebuild main
 ## faq...
 
 make sure to update version before publishing!
+
+windows wsl2 electron dev stuff:
+https://gist.github.com/caseywatts/9700b402b6b51d1d6af9f0b206739770
