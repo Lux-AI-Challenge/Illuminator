@@ -3,6 +3,10 @@ import React from 'react';
 // set UserContext and add type
 const EnvContext = React.createContext(
   {} as {
+    iframe?: HTMLIFrameElement;
+    setIframe: React.Dispatch<
+      React.SetStateAction<HTMLIFrameElement | undefined>
+    >;
     env: string;
     setEnv: (env: string) => $TSFIXME;
     runEpisode: (
@@ -14,12 +18,13 @@ const EnvContext = React.createContext(
       html?: string;
       postdata: string;
     }>;
-    // createEpisode: (env: string) => Promise<{
-    //   episodeId: string;
-    // }>;
-    // envStep: (env: string) => Promise<{
-    //   postdata: string;
-    // }>;
+    createEpisode: (env: string) => Promise<{
+      html?: string;
+      episodeId: string;
+    }>;
+    envStep: (episodeId: string) => Promise<{
+      postdata: string;
+    }>;
   }
 );
 

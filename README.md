@@ -26,3 +26,10 @@ make sure to update version before publishing!
 
 windows wsl2 electron dev stuff:
 https://gist.github.com/caseywatts/9700b402b6b51d1d6af9f0b206739770
+
+## how to add new IPC actions
+
+1. add it to ipc/{namespace}/actions/{name}.ts
+2. add it preload.ts
+3. add it to ipc/{namespace}/actions/index.ts
+4. add it to ipc/{namespace}/index.ts

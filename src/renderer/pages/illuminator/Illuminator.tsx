@@ -15,6 +15,7 @@ const Illuminator = () => {
     setUserPreferences({ env: filepath });
   };
   const [html, setHtml] = useState('');
+  const [iframe, setIframe] = useState<HTMLIFrameElement>();
   const runEpisode = async (
     envFile: string, // change to env name
     _agents: string[],
@@ -31,6 +32,42 @@ const Illuminator = () => {
     };
     // envData.id;
   };
+
+  // temp storing epiode here
+  const [episodeId, setEpisodeId] = useState('');
+  const createEpisode = async (envFile: string) => {
+    const pyagent =
+      '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/agent.py';
+    const jsagent =
+      '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/paper.js';
+    const res = await window.electron.dimensions.createEpisode({
+      env: envFile,
+      agents: [pyagent, jsagent],
+    });
+    setEpisodeId(res.episodeId);
+    console.log('NEW EPISODE', res.episodeId, env);
+    const htmlPath = path.join(path.dirname(envFile), res.metaData.html);
+    const html2 = (await window.electron.system.readFile(htmlPath)) as string;
+    setHtml(html2);
+    return {
+      html: html2,
+      episodeId: res.episodeId,
+    };
+  };
+  // todo move this to actions or smth
+  const envStep = async (_episodeId: string) => {
+    const res = await window.electron.dimensions.envStep({
+      episodeId: _episodeId,
+    });
+    console.log('STEP', res.results);
+    iframe!.contentWindow!.postMessage(
+      res.results.outputs[res.results.outputs.length - 1].data
+    );
+    return {
+      postdata: JSON.stringify(res.results),
+    };
+  };
+  const updateRenderer = async (postdata: string) => {};
   useEffect(() => {
     // timer =
     // createEpisode(envId)
@@ -41,7 +78,17 @@ const Illuminator = () => {
   }, []);
   return (
     <div className={styles.grid}>
-      <EnvProvider value={{ setEnv, env, runEpisode }}>
+      <EnvProvider
+        value={{
+          setEnv,
+          env,
+          runEpisode,
+          createEpisode,
+          envStep,
+          iframe,
+          setIframe,
+        }}
+      >
         <Base hStart={0} hEnd={1} vStart={0} vEnd={2}>
           <Control />
         </Base>

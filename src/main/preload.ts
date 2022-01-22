@@ -42,6 +42,12 @@ const handlers: Window['electron'] = {
         data
       );
     },
+    envStep(data) {
+      return invokeFunc<Dimensions, 'envStep'>('dim_envStep', data);
+    },
+    createEpisode(data) {
+      return invokeFunc<Dimensions, 'createEpisode'>('dim_createEpisode', data);
+    },
   },
   user: {
     getPreferences(data) {

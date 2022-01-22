@@ -1,4 +1,5 @@
 import { Environment } from 'dimensions-ai-temp/lib/main/Environment';
+import { Episode } from 'dimensions-ai-temp/lib/main/Episode';
 import { Dimension } from 'dimensions-ai-temp/lib/main/Dimension';
 
 export interface Context {
@@ -9,5 +10,6 @@ export interface Context {
     // TODO: map env name as well to the same stuff
     envs: Map<string, Environment>;
     envNameToEnvs: Map<string, Environment>;
+    episodes: Map<string, Episode>;
   };
 }

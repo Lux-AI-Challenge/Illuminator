@@ -17,18 +17,22 @@ import styles from './control.scss';
 
 const Control = () => {
   const { userPreferences, setUserPreferences } = useContext(UserContext);
-  const { env, runEpisode } = useContext(EnvContext);
+  const { env, runEpisode, createEpisode, envStep } = useContext(EnvContext);
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
+  const [episodeId, setEpisodeId] = useState('');
   const [matchResult, setMatchResult] = useState<
     Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
   >({
     final: 'abc',
   });
 
-  const runMatch = () => {
-    runEpisode(env, [], true, 0);
+  const runMatch = async () => {
+    // runEpisode(env, [], true, 0);
+    const res = await createEpisode(env);
+    setEpisodeId(res.episodeId);
+    const { postdata } = await envStep(res.episodeId);
     // runSingleEpisode(env, [], 0)
     //   .then((res) => {
     //     console.log({ res });
@@ -38,6 +42,9 @@ const Control = () => {
     //   .catch((err) => {
     //     console.error(err);
     //   });
+  };
+  const stepForward = async () => {
+    const { postdata } = await envStep(episodeId);
   };
   // TODO move this out of this component
   const selectEnvironment = async () => {
@@ -69,6 +76,9 @@ const Control = () => {
       <div>env file: {env || ''}</div>
       <Button onClick={runMatch} variant="contained" color="primary">
         Run Match
+      </Button>
+      <Button onClick={stepForward} variant="contained" color="primary">
+        Step
       </Button>
       {matchResult && (
         <div className={styles['result-box']}>

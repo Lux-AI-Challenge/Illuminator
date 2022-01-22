@@ -19,7 +19,7 @@
     window.addEventListener('message', (event) => {
       console.log('data', event.data);
       const scoreTitle = document.getElementById('score-title');
-      scoreTitle.textContent = `Score: ${event.data.info['player_0'].score} ${event.data.info['player_1'].score}`;
+      scoreTitle.textContent = `Score: ${event.data['player_0'].info.score} ${event.data['player_1'].info.score}`;
       //TODO. do something with observations
     });
   </script>

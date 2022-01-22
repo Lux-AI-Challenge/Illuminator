@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import EnvContext from 'renderer/contexts/env';
 import Base from '../base';
 import type { GridSectionProps } from '../groups';
 import styles from './styles.scss';
@@ -14,8 +15,14 @@ const Viewer: React.FC<ViewerProps> = ({
   vStart,
   vEnd,
 }) => {
+  const { setIframe } = useContext(EnvContext);
   console.log('GOT', html);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const iframe = document.getElementById('FileFrame') as HTMLIFrameElement;
+    setIframe(iframe);
+    console.log('SET IFRAME');
+  }, [html, setIframe]);
+
   return (
     <Base
       className={styles.viewer}
