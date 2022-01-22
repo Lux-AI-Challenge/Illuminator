@@ -28,6 +28,9 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 
+# python venv
+.venv
+
 # generated files
 src/main/preload.js
 
