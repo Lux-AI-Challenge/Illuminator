@@ -1,11 +1,12 @@
+import React, { ReactNode } from 'react';
 import clsx from 'clsx';
-import React from 'react';
 import { GridSectionProps, hGroups, vGroups } from '../groups';
 
 import styles from './styles.scss';
 
-interface BaseProps extends GridSectionProps {
+export interface BaseProps extends GridSectionProps {
   className?: string;
+  children?: ReactNode;
 }
 
 const Base: React.FC<BaseProps> = ({

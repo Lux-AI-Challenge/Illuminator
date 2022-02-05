@@ -1,14 +1,11 @@
 import { Button } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  getEnvMetaData,
-  runSingleEpisode,
-} from 'renderer/actions/engine/episode';
-import EnvContext, { EnvProvider } from 'renderer/contexts/env';
+import React, { useState } from 'react';
+import { getEnvMetaData } from 'renderer/actions/engine/episode';
 import ReactJson from 'react-json-view';
-import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
+// import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
 import { Dimensions } from 'main/ipc/dimensions/dimensions';
-import UserContext from 'renderer/contexts/user';
+import { useUserContext } from 'renderer/context/user';
+import { useEnvContext } from 'renderer/context/env';
 import path from 'path-browserify';
 import styles from './control.scss';
 
@@ -17,8 +14,8 @@ import styles from './control.scss';
  */
 
 const Control = () => {
-  const { setUserPreferences } = useContext(UserContext);
-  const { env, createEpisode, envStep, setHtml } = useContext(EnvContext);
+  const { setUserPreferences } = useUserContext();
+  const { env, createEpisode, envStep, setHtml } = useEnvContext();
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };

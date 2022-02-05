@@ -20,3 +20,11 @@
   --bottom-middle: calc(1 + 6);
   --bottom: calc(1 + 8);
 }
+
+.viewer {
+  // background-color: inherit;
+  background-color: var(--surface-color);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}

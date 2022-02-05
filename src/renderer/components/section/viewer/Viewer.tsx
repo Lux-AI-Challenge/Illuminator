@@ -1,21 +1,11 @@
-import React, { useContext, useEffect } from 'react';
-import EnvContext from 'renderer/contexts/env';
-import Base from '../base';
-import type { GridSectionProps } from '../groups';
+import React, { useEffect } from 'react';
+import { useEnvContext } from 'renderer/context/env';
 import styles from './styles.scss';
 
-interface ViewerProps extends GridSectionProps {
-  html?: string;
-}
+interface ViewerProps {}
 
-const Viewer: React.FC<ViewerProps> = ({
-  html,
-  hStart,
-  hEnd,
-  vStart,
-  vEnd,
-}) => {
-  const { setIframe } = useContext(EnvContext);
+const Viewer: React.FC<ViewerProps> = (props) => {
+  const { html, setIframe } = useEnvContext();
   console.log('GOT', html);
   useEffect(() => {
     const iframe = document.getElementById('FileFrame') as HTMLIFrameElement;
@@ -24,25 +14,10 @@ const Viewer: React.FC<ViewerProps> = ({
   }, [html, setIframe]);
 
   return (
-    <Base
-      className={styles.viewer}
-      hStart={hStart}
-      hEnd={hEnd}
-      vStart={vStart}
-      vEnd={vEnd}
-    >
-      {/* <iframe
-        src="/Users/stonetao/Desktop/Coding/Projects/aicompetitions/LuxAI/Illuminator/src/main/envs/rps/index.html"
-        title="abc"
-        style={{
-          objectFit: 'contain',
-          flexShrink: 1,
-          aspectRatio: '1 / 1',
-          background: 'red',
-        }}
-      /> */}
-      {html ? (
-        // <div dangerouslySetInnerHTML={{ __html: html }} />
+    <>
+      {!html ? (
+        'No renderer'
+      ) : (
         <iframe
           id="FileFrame"
           src="about:blank"
@@ -55,10 +30,8 @@ const Viewer: React.FC<ViewerProps> = ({
             background: 'white',
           }}
         />
-      ) : (
-        'No renderer'
       )}
-    </Base>
+    </>
   );
 };
 
