@@ -63,8 +63,9 @@ const Illuminator = () => {
     });
     console.log('STEP', res.results);
     iframe!.contentWindow!.postMessage(
-      res.results.outputs[res.results.outputs.length - 1].data
+      res.results.outputs[res.results.outputs.length - 1]
     );
+    console.log({ envStepRes: res });
     return {
       postdata: JSON.stringify(res.results),
     };

@@ -30,3 +30,6 @@ npm-debug.log.*
 
 # generated files
 src/main/preload.js
+
+
+__pycache__
