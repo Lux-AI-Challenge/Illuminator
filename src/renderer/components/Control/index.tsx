@@ -9,6 +9,7 @@ import ReactJson from 'react-json-view';
 import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
 import { Dimensions } from 'main/ipc/dimensions/dimensions';
 import UserContext from 'renderer/contexts/user';
+import path from 'path-browserify';
 import styles from './control.scss';
 
 /**
@@ -16,8 +17,8 @@ import styles from './control.scss';
  */
 
 const Control = () => {
-  const { userPreferences, setUserPreferences } = useContext(UserContext);
-  const { env, runEpisode, createEpisode, envStep } = useContext(EnvContext);
+  const { setUserPreferences } = useContext(UserContext);
+  const { env, createEpisode, envStep, setHtml } = useContext(EnvContext);
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
@@ -43,13 +44,31 @@ const Control = () => {
     //     console.error(err);
     //   });
   };
+
+  const createMatch = async () => {
+    // runEpisode(env, [], true, 0);
+    const res = await createEpisode(env);
+    setEpisodeId(res.episodeId);
+    // const { postdata } = await envStep(res.episodeId);
+    // runSingleEpisode(env, [], 0)
+    //   .then((res) => {
+    //     console.log({ res });
+    //     setMatchResult(res);
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+  };
   const stepForward = async () => {
     const { postdata } = await envStep(episodeId);
   };
+
   // TODO move this out of this component
+  /**
+   * Select environment file and also setup renderer
+   */
   const selectEnvironment = async () => {
-    // window.electron.store.get(STORE.ENV).then(console.log)
-    // console.log({oldenv});
     const filepath = await window.electron.system.fileSelect({
       title: 'Python env file',
       message: 'test message',
@@ -59,13 +78,13 @@ const Control = () => {
         { name: 'Python files', extensions: ['py'] },
       ],
     });
-    console.log(filepath);
     if (filepath) {
-      // const newEnv = filepath;
       setEnv(filepath);
-      // window.electron.store.set(STORE.ENV, newEnv);
       const metaData = await getEnvMetaData(filepath);
       console.log({ metaData });
+      const htmlPath = path.join(path.dirname(filepath), metaData.html);
+      const html = (await window.electron.system.readFile(htmlPath)) as string;
+      setHtml(html);
     }
   };
   return (
@@ -74,8 +93,8 @@ const Control = () => {
         Select Environment
       </Button>
       <div>env file: {env || ''}</div>
-      <Button onClick={runMatch} variant="contained" color="primary">
-        Run Match
+      <Button onClick={createMatch} variant="contained" color="primary">
+        Create Match
       </Button>
       <Button onClick={stepForward} variant="contained" color="primary">
         Step

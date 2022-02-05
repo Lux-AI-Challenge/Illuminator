@@ -12,7 +12,7 @@ app.setPath(
 const store = new ElectronStore() as Store;
 
 // setup dimensions
-setupDimensions(store);
+const { dim, ctx } = setupDimensions(store);
 setupUser(store);
 setupSystem();
 
@@ -23,3 +23,10 @@ ipcMain.handle('electron-store-get', async (_event, val) => {
 ipcMain.handle('electron-store-set', async (_event, key, val) => {
   return store.set(key, val);
 });
+
+export const cleanup = async () => {
+  dim.cleanup();
+  ctx.data.envs.clear();
+  ctx.data.envs.clear();
+  ctx.data.episodes.clear();
+};

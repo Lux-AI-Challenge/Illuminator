@@ -34,7 +34,7 @@ const Illuminator = () => {
   };
 
   // temp storing epiode here
-  const [episodeId, setEpisodeId] = useState('');
+  // const [episodeId, setEpisodeId] = useState('');
   const createEpisode = async (envFile: string) => {
     const pyagent =
       '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/agent.py';
@@ -44,14 +44,16 @@ const Illuminator = () => {
       env: envFile,
       agents: [pyagent, jsagent],
     });
-    setEpisodeId(res.episodeId);
+    // setEpisodeId(res.episodeId);
     console.log('NEW EPISODE', res.episodeId, env);
+    iframe!.contentWindow!.postMessage({ agentNames: res.agentNames });
     const htmlPath = path.join(path.dirname(envFile), res.metaData.html);
     const html2 = (await window.electron.system.readFile(htmlPath)) as string;
     setHtml(html2);
     return {
       html: html2,
       episodeId: res.episodeId,
+      agentNames: res.agentNames,
     };
   };
   // todo move this to actions or smth
@@ -67,6 +69,7 @@ const Illuminator = () => {
       postdata: JSON.stringify(res.results),
     };
   };
+
   const updateRenderer = async (postdata: string) => {};
   useEffect(() => {
     // timer =
@@ -76,6 +79,9 @@ const Illuminator = () => {
       // clearInterval(timer);
     };
   }, []);
+  // useEffect(() => {
+  //   setEnvStep(envStepFnc);
+  // }, [iframe]);
   return (
     <div className={styles.grid}>
       <EnvProvider
@@ -87,6 +93,7 @@ const Illuminator = () => {
           envStep,
           iframe,
           setIframe,
+          setHtml,
         }}
       >
         <Base hStart={0} hEnd={1} vStart={0} vEnd={2}>

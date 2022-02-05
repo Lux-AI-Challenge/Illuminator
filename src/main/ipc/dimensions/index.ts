@@ -19,4 +19,5 @@ export const setupDimensions = (store: Store) => {
   handleFunc(DimensionsApi, 'envRegisterAgents');
   handleFunc(DimensionsApi, 'envStep', ctx);
   handleFunc(DimensionsApi, 'createEpisode', ctx);
+  return { dim, ctx };
 };

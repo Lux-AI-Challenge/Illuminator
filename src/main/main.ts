@@ -11,13 +11,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import setupLogger from './utils/setupLogger';
-import './ipc';
+import { cleanup } from './ipc';
 
 export default class AppUpdater {
   constructor() {
@@ -96,7 +96,21 @@ const createWindow = async () => {
       mainWindow.focus();
     }
   });
-
+  // const { globalShortcut } = electron;
+  globalShortcut.register('f5', () => {
+    console.log('f5 is pressed');
+    if (mainWindow) {
+      cleanup();
+      mainWindow.reload();
+    }
+  });
+  globalShortcut.register('CommandOrControl+R', () => {
+    if (mainWindow) {
+      // clean up
+      cleanup();
+      mainWindow.reload();
+    }
+  });
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

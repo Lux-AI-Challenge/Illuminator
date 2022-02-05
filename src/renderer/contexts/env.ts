@@ -22,9 +22,13 @@ const EnvContext = React.createContext(
       html?: string;
       episodeId: string;
     }>;
-    envStep: (episodeId: string) => Promise<{
+    envStep: (
+      // iframe: HTMLIFrameElement,
+      episodeId: string
+    ) => Promise<{
       postdata: string;
     }>;
+    setHtml: React.Dispatch<React.SetStateAction<string>>;
   }
 );
 
