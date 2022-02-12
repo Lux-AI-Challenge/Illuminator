@@ -6,14 +6,18 @@ interface Context {
   store: Store;
 }
 
-type Data = DeepPartial<UserPreferences>;
+type Data = {
+  prefs: DeepPartial<UserPreferences>;
+  clobber?: boolean;
+};
 
 type Result = UserPreferences;
 
 export const setPreferences: Action<Data, Result, Context> =
   (ctx) => async (_event, data) => {
     let prefs = ctx.store.get('userPreferences', DEFAULT_USER_PREFERENCES);
-    prefs = deepMerge(prefs, data);
+    const clobberArrays = data.clobber ?? true;
+    prefs = deepMerge(prefs, data.prefs, clobberArrays);
     ctx.store.set('userPreferences', prefs);
     return prefs;
   };

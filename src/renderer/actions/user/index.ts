@@ -4,7 +4,8 @@ export const getUserPreferences = async () => {
   return window.electron.user.getPreferences();
 };
 export const setUserPreferences = async (
-  prefs: DeepPartial<UserPreferences>
+  prefs: DeepPartial<UserPreferences>,
+  clobber = true
 ) => {
-  return window.electron.user.setPreferences(prefs);
+  return window.electron.user.setPreferences({ prefs, clobber });
 };

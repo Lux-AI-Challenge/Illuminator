@@ -15,14 +15,16 @@ import styles from './index.scss';
  * Component for selecting agents from a file system
  */
 const SelectAgents = ({
+  agents,
   onAgentsChange,
 }: {
+  agents: string[];
   onAgentsChange: (data: { agents: string[] }) => void;
 }) => {
   /**
    * Select environment file and also setup renderer
    */
-  const [agents, setAgents] = useState<Array<string>>([]);
+  // const [agents, setAgents] = useState<Array<string>>([]);
   const selectAgent = async () => {
     const filepath = await window.electron.system.fileSelect({
       title: 'Agent file',
@@ -35,7 +37,7 @@ const SelectAgents = ({
     });
     if (filepath) {
       const newAgents = [...agents, filepath];
-      setAgents(newAgents);
+      // setAgents(newAgents);
       onAgentsChange({
         agents: newAgents,
       });
@@ -45,7 +47,10 @@ const SelectAgents = ({
     const idx = parseInt(key.split('_')[0], 10);
     const newAgents = [...agents];
     newAgents.splice(idx, 1);
-    setAgents(newAgents);
+    onAgentsChange({
+      agents: newAgents,
+    });
+    // setAgents(newAgents);
   };
   return (
     <div className={styles.SelectAgents}>

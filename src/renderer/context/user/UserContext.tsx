@@ -7,7 +7,8 @@ import * as UserActions from 'renderer/actions/user';
 interface UserContext {
   userPreferences: UserPreferences;
   setUserPreferences: (
-    prefs: DeepPartial<UserPreferences>
+    prefs: DeepPartial<UserPreferences>,
+    clobberArrays?: boolean
   ) => Promise<UserPreferences>;
 }
 
@@ -30,8 +31,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [userPreferences, setUserPreferencesInternal] =
     useState<UserPreferences>({} as UserPreferences);
 
-  const setUserPreferences = (prefs: DeepPartial<UserPreferences>) => {
-    const newprefs = deepMerge(userPreferences, prefs);
+  const setUserPreferences = (
+    prefs: DeepPartial<UserPreferences>,
+    clobberArrays = true
+  ) => {
+    const newprefs = deepMerge(userPreferences, prefs, clobberArrays);
+    console.log({ newprefs });
     setUserPreferencesInternal(newprefs);
     UserActions.setUserPreferences(newprefs); // TODO: woudl this be problematic with asycn out of updates?
     return newprefs;
@@ -41,6 +46,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     // start up code?
     UserActions.getUserPreferences()
       .then((prefs) => {
+        console.info('Current User Preferences', prefs);
         return setUserPreferencesInternal(prefs);
       })
       // eslint-disable-next-line no-console

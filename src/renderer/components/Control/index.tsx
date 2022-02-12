@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getEnvMetaData } from 'renderer/actions/engine/episode';
 import ReactJson from 'react-json-view';
 // import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
@@ -15,12 +15,18 @@ import styles from './control.scss';
  */
 
 const Control = () => {
-  const { setUserPreferences } = useUserContext();
+  const { setUserPreferences, userPreferences } = useUserContext();
   const { env, createEpisode, envStep, setHtml } = useEnvContext();
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
   const [agents, setAgents] = useState<Array<string>>([]);
+  // initialize data from user preferences
+  useEffect(() => {
+    if (userPreferences.agents) {
+      setAgents(userPreferences.agents);
+    }
+  }, [userPreferences]);
   const [episodeId, setEpisodeId] = useState('');
   const [matchResult, setMatchResult] = useState<
     Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
@@ -52,6 +58,7 @@ const Control = () => {
     const { postdata } = await envStep(episodeId);
   };
   const onAgentsChange = (data: { agents: string[] }) => {
+    setUserPreferences({ agents: data.agents });
     setAgents(data.agents);
   };
   // TODO move this out of this component
@@ -83,7 +90,7 @@ const Control = () => {
         Select Environment
       </Button>
       <div>env file: {env || ''}</div>
-      <SelectAgents onAgentsChange={onAgentsChange} />
+      <SelectAgents agents={agents} onAgentsChange={onAgentsChange} />
       <Button onClick={createMatch} variant="contained" color="primary">
         Create Match
       </Button>
