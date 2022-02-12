@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import Viewer from 'renderer/components/section/viewer';
-import Control from 'renderer/components/Control';
+import Control from 'renderer/components/MatchRunner';
 import { EnvProvider } from 'renderer/context/env';
 import Base, { BaseProps } from 'renderer/components/section/base';
 import { GridSectionProps } from 'renderer/components/section/groups';
@@ -33,7 +33,7 @@ const Illuminator = () => {
     <EnvProvider>
       <div className={styles.grid}>
         <TopLeft>
-          <Control />
+          <SelectModule />
         </TopLeft>
         <Center className={styles.viewer}>
           <Viewer />

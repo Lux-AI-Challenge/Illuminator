@@ -15,6 +15,7 @@ import path from 'path-browserify';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
+import MatchRunner from 'renderer/components/MatchRunner';
 import styles from './index.scss';
 
 /**
@@ -24,12 +25,15 @@ const SelectModule = () => {
   /**
    * Select environment file and also setup renderer
    */
-  const [module, setModule] = useState<string | null>();
+  const [module, setModule] = useState<{
+    name: string;
+    component: $TSFIXME;
+  } | null>(null);
   const [open, setOpen] = useState(false);
   const moduleOptions = [
     { label: 'BarChart' },
     { label: 'LineChart' },
-    { label: 'MatchRunner' },
+    { label: 'MatchRunner', component: MatchRunner },
     { label: 'TournamentRunner' },
   ];
   const handleModalOpen = () => {
@@ -45,7 +49,7 @@ const SelectModule = () => {
         <div>
           <div>
             <Typography variant="body1" style={{ display: 'inline' }}>
-              {module}
+              {module.name}
             </Typography>
             <IconButton
               className={styles['remove-module']}
@@ -57,6 +61,7 @@ const SelectModule = () => {
               <CloseIcon className={styles['remove-module-close']} />
             </IconButton>
           </div>
+          <module.component />
         </div>
       ) : (
         <div className={styles['add-module']}>
@@ -80,7 +85,13 @@ const SelectModule = () => {
             options={moduleOptions}
             sx={{ width: 300 }}
             onChange={(_, newValue) => {
-              setModule(newValue?.label);
+              console.log(newValue);
+              if (newValue) {
+                setModule({
+                  name: newValue?.label,
+                  component: newValue?.component,
+                });
+              }
             }}
             renderInput={(params) => {
               // eslint-disable-next-line react/jsx-props-no-spreading

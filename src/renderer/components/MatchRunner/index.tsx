@@ -8,13 +8,13 @@ import { useUserContext } from 'renderer/context/user';
 import { useEnvContext } from 'renderer/context/env';
 import SelectAgents from 'renderer/components/SelectAgents';
 import path from 'path-browserify';
-import styles from './control.scss';
+import styles from './index.scss';
 
 /**
  * Generic component. TODO probably split this up later
  */
 
-const Control = () => {
+const MatchRunner = () => {
   const { setUserPreferences, userPreferences } = useUserContext();
   const { env, createEpisode, envStep, setHtml } = useEnvContext();
   const setEnv = (filepath: string) => {
@@ -105,4 +105,4 @@ const Control = () => {
     </div>
   );
 };
-export default Control;
+export default MatchRunner;
