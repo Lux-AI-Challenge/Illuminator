@@ -28,8 +28,9 @@ const Graph = ({ data, series }: GraphProps): JSX.Element => {
     <div className={styles.graph}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
-          {series.map(({ key }) => (
-            <Line type="monotone" dataKey={key} />
+          {series.map(({ key }, i) => (
+            // not good to use index for key but w/e lets just do this for now
+            <Line key={i} type="monotone" dataKey={key} />
           ))}
         </LineChart>
       </ResponsiveContainer>
