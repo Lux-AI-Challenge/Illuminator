@@ -1,20 +1,19 @@
 import {
-  Button,
   IconButton,
   List,
   ListItem,
   ListItemText,
   Typography,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState } from 'react';
 import path from 'path-browserify';
 import styles from './index.scss';
 
 /**
- * Generic component. TODO probably split this up later
+ * Component for selecting agents from a file system
  */
-
 const SelectAgents = ({
   onAgentsChange,
 }: {
@@ -50,10 +49,7 @@ const SelectAgents = ({
   };
   return (
     <div className={styles.SelectAgents}>
-      <Button variant="contained" component="label" onClick={selectAgent}>
-        Add Agent
-      </Button>
-      <Typography variant="body1">Selected Agents:</Typography>
+      <Typography variant="h5">Select Agents</Typography>
       <List dense className={styles['agent-list']}>
         {agents.map((agent, idx) => {
           const baseName = path.basename(agent);
@@ -78,9 +74,17 @@ const SelectAgents = ({
             </ListItem>
           );
         })}
-        {/* {generate(
-                ,
-              )} */}
+        <ListItem
+          className={`${styles['agent-list-item']}
+            ${styles['agent-list-add']}`}
+          secondaryAction={
+            <IconButton edge="end" aria-label="addAgent" onClick={selectAgent}>
+              <AddIcon />
+            </IconButton>
+          }
+        >
+          <ListItemText primary="Add Agent" />
+        </ListItem>
       </List>
     </div>
   );

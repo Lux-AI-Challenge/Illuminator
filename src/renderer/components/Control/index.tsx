@@ -20,6 +20,7 @@ const Control = () => {
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
+  const [agents, setAgents] = useState<Array<string>>([]);
   const [episodeId, setEpisodeId] = useState('');
   const [matchResult, setMatchResult] = useState<
     Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
@@ -29,7 +30,7 @@ const Control = () => {
 
   const runMatch = async () => {
     // runEpisode(env, [], true, 0);
-    const res = await createEpisode(env);
+    const res = await createEpisode(env, agents);
     setEpisodeId(res.episodeId);
     const { postdata } = await envStep(res.episodeId);
     // runSingleEpisode(env, [], 0)
@@ -44,25 +45,14 @@ const Control = () => {
   };
 
   const createMatch = async () => {
-    // runEpisode(env, [], true, 0);
-    const res = await createEpisode(env);
+    const res = await createEpisode(env, agents);
     setEpisodeId(res.episodeId);
-    // const { postdata } = await envStep(res.episodeId);
-    // runSingleEpisode(env, [], 0)
-    //   .then((res) => {
-    //     console.log({ res });
-    //     setMatchResult(res);
-    //     return res;
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
   };
   const stepForward = async () => {
     const { postdata } = await envStep(episodeId);
   };
-  const onAgentsChange = ({ agents }: { agents: string[] }) => {
-    console.log('Added agent', agents);
+  const onAgentsChange = (data: { agents: string[] }) => {
+    setAgents(data.agents);
   };
   // TODO move this out of this component
   /**
