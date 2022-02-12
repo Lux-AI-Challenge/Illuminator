@@ -229,6 +229,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@fontsource/roboto": "^4.5.0",
+    "@mui/icons-material": "^5.4.1",
     "@mui/material": "^5.1.0",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.3.5",

@@ -6,6 +6,7 @@ import ReactJson from 'react-json-view';
 import { Dimensions } from 'main/ipc/dimensions/dimensions';
 import { useUserContext } from 'renderer/context/user';
 import { useEnvContext } from 'renderer/context/env';
+import SelectAgents from 'renderer/components/SelectAgents';
 import path from 'path-browserify';
 import styles from './control.scss';
 
@@ -60,7 +61,9 @@ const Control = () => {
   const stepForward = async () => {
     const { postdata } = await envStep(episodeId);
   };
-
+  const onAgentsChange = ({ agents }: { agents: string[] }) => {
+    console.log('Added agent', agents);
+  };
   // TODO move this out of this component
   /**
    * Select environment file and also setup renderer
@@ -90,6 +93,7 @@ const Control = () => {
         Select Environment
       </Button>
       <div>env file: {env || ''}</div>
+      <SelectAgents onAgentsChange={onAgentsChange} />
       <Button onClick={createMatch} variant="contained" color="primary">
         Create Match
       </Button>
