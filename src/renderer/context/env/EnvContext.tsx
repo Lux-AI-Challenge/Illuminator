@@ -17,7 +17,10 @@ interface EnvContext {
     html?: string;
     postdata: string;
   }>;
-  createEpisode: (env: string) => Promise<{
+  createEpisode: (
+    env: string,
+    agents: string[]
+  ) => Promise<{
     html?: string;
     episodeId: string;
   }>;
@@ -54,7 +57,7 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
   const [html, setHtml] = useState<string>('');
   const [iframe, setIframe] = useState<HTMLIFrameElement | undefined>();
   const runEpisode = async (
-    envFile: string, // change to env name
+    envFile: string // change to env name
     // _agents: string[],
     // _live: boolean,
     // _seed?: number
@@ -74,14 +77,14 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
 
   // temp storing epiode here
   // const [episodeId, setEpisodeId] = useState('');
-  const createEpisode = async (envFile: string) => {
-    const pyagent =
-      '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/agent.py';
-    const jsagent =
-      '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/paper.js';
+  const createEpisode = async (envFile: string, agents: string[]) => {
+    // const pyagent =
+    //   '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/LuxAI/Illuminator/src/main/envs/rps/agents/rand_agent.py';
+    // const jsagent =
+    //   '/Users/stonetao/Desktop/Coding/Projects/aicompetitions/dimensions/tests/envs/rps/agents/paper.js';
     const res = await window.electron.dimensions.createEpisode({
       env: envFile,
-      agents: [pyagent, jsagent],
+      agents,
     });
     // setEpisodeId(res.episodeId);
     console.log('NEW EPISODE', res.episodeId, env);
