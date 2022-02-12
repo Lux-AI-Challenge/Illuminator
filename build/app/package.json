@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cross-spawn": "^7.0.3",
-    "dimensions-ai-temp": "^0.0.7",
+    "dimensions-ai-temp": "^0.0.8",
     "ssh2": "^1.5.0"
   }
 }
