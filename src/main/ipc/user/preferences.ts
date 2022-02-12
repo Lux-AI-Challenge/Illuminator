@@ -19,6 +19,10 @@ export interface UserPreferences {
    * Most recent selection of tournament agents
    */
   tournamentAgents: string[];
+  /**
+   * TODO
+   */
+  dashboardLayout: (string | null)[];
 }
 
 export const DEFAULT_USER_PREFERENCES: UserPreferences = {
@@ -27,4 +31,5 @@ export const DEFAULT_USER_PREFERENCES: UserPreferences = {
   pythonInterpreter: 'python',
   agents: [],
   tournamentAgents: [],
+  dashboardLayout: [],
 };

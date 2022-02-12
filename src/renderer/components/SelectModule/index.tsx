@@ -18,24 +18,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import MatchRunner from 'renderer/components/MatchRunner';
 import styles from './index.scss';
 
+export type ModuleInfo = {
+  name: string;
+  component: $TSFIXME;
+} | null;
+
 /**
  * Component for selecting agents from a file system
  */
-const SelectModule = () => {
+const SelectModule = ({
+  module,
+  onModuleChange,
+  moduleOptions,
+}: {
+  module: ModuleInfo;
+  moduleOptions: $TSFIXME[];
+  onModuleChange: (data: ModuleInfo) => void;
+}) => {
   /**
    * Select environment file and also setup renderer
    */
-  const [module, setModule] = useState<{
-    name: string;
-    component: $TSFIXME;
-  } | null>(null);
+  // const [module, setModule] = useState<>(null);
   const [open, setOpen] = useState(false);
-  const moduleOptions = [
-    { label: 'BarChart' },
-    { label: 'LineChart' },
-    { label: 'MatchRunner', component: MatchRunner },
-    { label: 'TournamentRunner' },
-  ];
+
   const handleModalOpen = () => {
     setOpen(true);
   };
@@ -55,7 +60,7 @@ const SelectModule = () => {
               className={styles['remove-module']}
               style={{ color: 'white' }}
               onClick={() => {
-                setModule(null);
+                onModuleChange(null);
               }}
             >
               <CloseIcon className={styles['remove-module-close']} />
@@ -83,12 +88,12 @@ const SelectModule = () => {
           <Autocomplete
             disablePortal
             options={moduleOptions}
+            getOptionLabel={(option) => (option ? option.name : 'null')}
             sx={{ width: 300 }}
             onChange={(_, newValue) => {
-              console.log(newValue);
               if (newValue) {
-                setModule({
-                  name: newValue?.label,
+                onModuleChange({
+                  name: newValue?.name,
                   component: newValue?.component,
                 });
               }
