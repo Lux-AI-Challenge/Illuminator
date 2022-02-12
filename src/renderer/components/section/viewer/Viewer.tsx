@@ -4,13 +4,11 @@ import styles from './styles.scss';
 
 interface ViewerProps {}
 
-const Viewer: React.FC<ViewerProps> = (props) => {
+const Viewer: React.FC<ViewerProps> = () => {
   const { html, setIframe } = useEnvContext();
-  console.log('GOT', html);
   useEffect(() => {
     const iframe = document.getElementById('FileFrame') as HTMLIFrameElement;
     setIframe(iframe);
-    console.log('SET IFRAME');
   }, [html, setIframe]);
 
   return (

@@ -105,11 +105,9 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
     const res = await window.electron.dimensions.envStep({
       episodeId: _episodeId,
     });
-    console.log('STEP', res.results);
     iframe?.contentWindow?.postMessage(
       res.results.outputs[res.results.outputs.length - 1]
     );
-    console.log({ envStepRes: res });
     return {
       postdata: JSON.stringify(res.results),
     };

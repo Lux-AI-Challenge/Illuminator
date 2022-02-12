@@ -43,12 +43,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       .then((prefs) => {
         return setUserPreferencesInternal(prefs);
       })
+      // eslint-disable-next-line no-console
       .catch(console.error);
   }, []);
-
-  // useEffect(() => {
-  //   console.log('changed', { userPreferences });
-  // }, [userPreferences]);
 
   return (
     <userContext.Provider value={{ userPreferences, setUserPreferences }}>

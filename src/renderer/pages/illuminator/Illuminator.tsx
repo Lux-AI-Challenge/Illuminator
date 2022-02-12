@@ -28,7 +28,6 @@ const Center = (props: Omit<BaseProps, keyof GridSectionProps>) => (
 );
 
 const Illuminator = () => {
-
   return (
     <EnvProvider>
       <div className={styles.grid}>
