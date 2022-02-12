@@ -4,10 +4,18 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { useUserContext } from 'renderer/context/user';
 
 interface EnvContext {
+  html: string;
+  setHtml: Dispatch<SetStateAction<string>>;
+
   iframe: HTMLIFrameElement | undefined;
   setIframe: Dispatch<SetStateAction<HTMLIFrameElement | undefined>>;
+
   env: string;
   setEnv: (env: string) => $TSFIXME;
+
+  replayData: $TSFIXME[];
+  setReplayData: Dispatch<SetStateAction<$TSFIXME[]>>;
+
   runEpisode: (
     env: string,
     agents: string[],
@@ -30,8 +38,6 @@ interface EnvContext {
   ) => Promise<{
     postdata: string;
   }>;
-  html: string;
-  setHtml: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const envContext = createContext<EnvContext | undefined>(undefined);
@@ -49,13 +55,19 @@ interface EnvProviderProps {
 }
 
 export const EnvProvider = ({ children }: EnvProviderProps) => {
-  const { userPreferences, setUserPreferences } = useUserContext();
-  const { env } = userPreferences;
+  const {
+    userPreferences: { env },
+    setUserPreferences,
+  } = useUserContext();
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
+
   const [html, setHtml] = useState<string>('');
   const [iframe, setIframe] = useState<HTMLIFrameElement | undefined>();
+
+  const [replayData, setReplayData] = useState<$TSFIXME[]>([]);
+
   const runEpisode = async (
     envFile: string // change to env name
     // _agents: string[],
@@ -90,10 +102,9 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
     console.log('NEW EPISODE', res.episodeId, env);
     iframe?.contentWindow?.postMessage({ agentNames: res.agentNames });
     const htmlPath = path.join(path.dirname(envFile), res.metaData.html);
-    const htmlContents = (await window.electron.system.readFile(
-      htmlPath
-    )) as string;
+    const htmlContents = await window.electron.system.readFile(htmlPath);
     setHtml(htmlContents);
+    setReplayData([]);
     return {
       html: htmlContents,
       episodeId: res.episodeId,
@@ -108,6 +119,7 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
     iframe?.contentWindow?.postMessage(
       res.results.outputs[res.results.outputs.length - 1]
     );
+    setReplayData(res.results.outputs);
     return {
       postdata: JSON.stringify(res.results),
     };
@@ -129,15 +141,17 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
   return (
     <envContext.Provider
       value={{
-        env,
-        setEnv,
-        runEpisode,
-        createEpisode,
-        envStep,
         html,
         setHtml,
         iframe,
         setIframe,
+        env,
+        setEnv,
+        replayData,
+        setReplayData,
+        runEpisode,
+        createEpisode,
+        envStep,
       }}
     >
       {children}

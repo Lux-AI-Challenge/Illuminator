@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import Viewer from 'renderer/components/section/viewer';
-import Control from 'renderer/components/MatchRunner';
-import { EnvProvider } from 'renderer/context/env';
 import Base, { BaseProps } from 'renderer/components/section/base';
 import { GridSectionProps } from 'renderer/components/section/groups';
+import Graph from 'renderer/components/graph';
 import SelectModule from 'renderer/components/SelectModule';
+import { useEnvContext } from 'renderer/context/env';
 import styles from './styles.scss';
 
 const TopLeft = (props: Omit<BaseProps, keyof GridSectionProps>) => (
@@ -29,29 +29,34 @@ const Center = (props: Omit<BaseProps, keyof GridSectionProps>) => (
 );
 
 const Illuminator = () => {
+  const { replayData } = useEnvContext();
   return (
-    <EnvProvider>
-      <div className={styles.grid}>
-        <TopLeft>
-          <SelectModule />
-        </TopLeft>
-        <Center className={styles.viewer}>
-          <Viewer />
-        </Center>
-        <TopRight>
-          <SelectModule />
-        </TopRight>
-        <MidRight>
-          <SelectModule />
-        </MidRight>
-        <BotLeft>
-          <SelectModule />
-        </BotLeft>
-        <BotRight>
-          <SelectModule />
-        </BotRight>
-      </div>
-    </EnvProvider>
+    <div className={styles.grid}>
+      <TopLeft>
+        <SelectModule />
+      </TopLeft>
+      <Center className={styles.viewer}>
+        <Viewer />
+      </Center>
+      <TopRight>
+        <Graph
+          data={replayData}
+          series={[
+            { key: (x) => x.data.player_0?.info?.score ?? 0 },
+            { key: (x) => x.data.player_1?.info?.score ?? 0 },
+          ]}
+        />
+      </TopRight>
+      <MidRight>
+        <SelectModule />
+      </MidRight>
+      <BotLeft>
+        <SelectModule />
+      </BotLeft>
+      <BotRight>
+        <SelectModule />
+      </BotRight>
+    </div>
   );
 };
 

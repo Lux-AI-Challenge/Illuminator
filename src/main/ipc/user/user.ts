@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { getPreferences } from './actions/getPreferences';
+import { setPreferences } from './actions/setPreferences';
 import type { MainProcessApi } from '../types';
-import * as actions from './actions';
 
 const UserApi = {
   prefix: 'user',
-  actions,
+  actions: {
+    getPreferences,
+    setPreferences,
+  },
 } as const;
 
 export type User = typeof UserApi;

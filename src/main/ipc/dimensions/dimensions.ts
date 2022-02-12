@@ -1,10 +1,26 @@
 /* eslint-disable */
+import { makeEnv } from './actions/makeEnv';
+import { closeEnv } from './actions/closeEnv';
+import { runEpisode } from './actions/runEpisode';
+import { runSingleEpisode } from './actions/runSingleEpisode';
+import { initializeAgents } from './actions/initializeAgents';
+import { envRegisterAgents } from './actions/envRegisterAgents';
+import { envStep } from './actions/envStep';
+import { createEpisode } from './actions/createEpisode';
 import type { MainProcessApi } from '../types';
-import * as actions from './actions';
 
 const DimensionsApi = {
   prefix: 'dim',
-  actions,
+  actions: {
+    makeEnv,
+    closeEnv,
+    runEpisode,
+    runSingleEpisode,
+    initializeAgents,
+    envRegisterAgents,
+    envStep,
+    createEpisode,
+  },
 } as const;
 
 export type Dimensions = typeof DimensionsApi;
