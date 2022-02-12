@@ -25,7 +25,7 @@ where each prefix is unique, and `actions` contains a list mapping `action` stri
 
 Each function takes a `context` object providing any additional relevant data needed, and returns a callback that can be passed into `ipcMain.invoke()`.
 
-To add a new function, create a new file for it in `ipc/[api]/actions/myFunction.ts` and export it in `main/ipc/[api]/actions/index.ts`. In order to actually use the function, we will also need to register a handler and invoker for it (discussed later).
+To add a new function, create a new file for it in `ipc/[api]/actions/myFunction.ts` and add it to `actions` in `main/ipc/[api]/[api].ts`. In order to actually use the function, we will also need to register a handler and invoker for it (discussed later).
 
 Messages take the form `${api_prefix}_${api_action}`.
 

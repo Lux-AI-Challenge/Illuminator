@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { fileSelect } from './actions/fileSelect';
+import { getPythonInterpreters } from './actions/getPythonInterpreters';
+import { readFile } from './actions/readFile';
 import type { MainProcessApi } from '../types';
-import * as actions from './actions';
 
 const SystemApi = {
   prefix: 'sys',
-  actions,
+  actions: {
+    fileSelect,
+    getPythonInterpreters,
+    readFile,
+  },
 } as const;
 
 export type System = typeof SystemApi;
