@@ -97,11 +97,11 @@ const Control = () => {
       <Button onClick={stepForward} variant="contained" color="primary">
         Step
       </Button>
-      {matchResult && (
+      {/* {matchResult && (
         <div className={styles['result-box']}>
           <ReactJson src={matchResult} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

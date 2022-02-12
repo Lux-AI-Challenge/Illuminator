@@ -6,6 +6,7 @@ import Control from 'renderer/components/Control';
 import { EnvProvider } from 'renderer/context/env';
 import Base, { BaseProps } from 'renderer/components/section/base';
 import { GridSectionProps } from 'renderer/components/section/groups';
+import SelectModule from 'renderer/components/SelectModule';
 import styles from './styles.scss';
 
 const TopLeft = (props: Omit<BaseProps, keyof GridSectionProps>) => (
@@ -37,10 +38,18 @@ const Illuminator = () => {
         <Center className={styles.viewer}>
           <Viewer />
         </Center>
-        <TopRight />
-        <MidRight />
-        <BotLeft />
-        <BotRight />
+        <TopRight>
+          <SelectModule />
+        </TopRight>
+        <MidRight>
+          <SelectModule />
+        </MidRight>
+        <BotLeft>
+          <SelectModule />
+        </BotLeft>
+        <BotRight>
+          <SelectModule />
+        </BotRight>
       </div>
     </EnvProvider>
   );
