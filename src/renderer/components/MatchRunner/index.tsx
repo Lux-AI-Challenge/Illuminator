@@ -1,9 +1,6 @@
-import { Button } from '@mui/material';
+import { Button, ButtonGroup } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getEnvMetaData } from 'renderer/actions/engine/episode';
-import ReactJson from 'react-json-view';
-// import SelectPythonInterpreter from 'renderer/components/SelectPythonInterpreter';
-import { Dimensions } from 'main/ipc/dimensions/dimensions';
 import { useUserContext } from 'renderer/context/user';
 import { useEnvContext } from 'renderer/context/env';
 import SelectAgents from 'renderer/components/SelectAgents';
@@ -16,11 +13,12 @@ import styles from './index.scss';
 
 const MatchRunner = () => {
   const { setUserPreferences, userPreferences } = useUserContext();
-  const { env, createEpisode, envStep, setHtml } = useEnvContext();
+  const { env, createEpisode, envStep, setHtml, replayData } = useEnvContext();
   const setEnv = (filepath: string) => {
     setUserPreferences({ env: filepath });
   };
   const [agents, setAgents] = useState<Array<string>>([]);
+  const [matchPaused, setMatchPaused] = useState(true);
   // initialize data from user preferences
   useEffect(() => {
     if (userPreferences.agents) {
@@ -28,17 +26,57 @@ const MatchRunner = () => {
     }
   }, [userPreferences]);
   const [episodeId, setEpisodeId] = useState('');
-  const [matchResult, setMatchResult] = useState<
-    Awaited<ReturnType<ReturnType<Dimensions['actions']['runSingleEpisode']>>> // TODO: maybe extract some of these input/ouput types to somewhere else?
-  >({
-    final: 'abc',
-  });
 
+  let episodeDone = false;
+  let canCreateMatch = false;
+  let canRestartMatch = false;
+  let matchReady = false;
+  if (episodeId === '') {
+    canCreateMatch = true;
+  } else {
+    canRestartMatch = true;
+    canCreateMatch = false;
+    matchReady = true;
+  }
+
+  const episodeIsDone = (latestStep: $TSFIXME) => {
+    let dones = 0;
+    const playerIds = Object.keys(latestStep.data);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const playerId of playerIds) {
+      if (latestStep.data[playerId].done) {
+        dones += 1;
+      }
+    }
+    if (dones === playerIds.length) {
+      return true;
+    }
+    return false;
+  };
+  if (replayData.length) {
+    episodeDone = episodeIsDone(replayData[replayData.length - 1]);
+  }
+  const createMatch = async () => {
+    const res = await createEpisode(env, agents);
+    setMatchPaused(true);
+    setEpisodeId(res.episodeId);
+  };
+  const stepForward = async () => {
+    // console.log(replayData.outputs[replayData.outputs.length - 1]);
+    if (episodeDone) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Tried to step forward through episode ${episodeId} which already finished`
+      );
+      return;
+    }
+    await envStep(episodeId);
+  };
   const runMatch = async () => {
     // runEpisode(env, [], true, 0);
     const res = await createEpisode(env, agents);
     setEpisodeId(res.episodeId);
-    const { postdata } = await envStep(res.episodeId);
+    setMatchPaused(false);
     // runSingleEpisode(env, [], 0)
     //   .then((res) => {
     //     console.log({ res });
@@ -49,14 +87,33 @@ const MatchRunner = () => {
     //     console.error(err);
     //   });
   };
-
-  const createMatch = async () => {
-    const res = await createEpisode(env, agents);
-    setEpisodeId(res.episodeId);
-  };
-  const stepForward = async () => {
-    const { postdata } = await envStep(episodeId);
-  };
+  // live running functionalities
+  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!episodeId || matchPaused) {
+      return () => {};
+    }
+    async function liverun() {
+      let done = false;
+      if (replayData.length) {
+        done = episodeIsDone(replayData[replayData.length - 1]);
+      }
+      if (!done) {
+        await envStep(episodeId);
+      }
+      if (done) {
+        setMatchPaused(true);
+      }
+    }
+    liverun();
+    return () => {};
+  }, [episodeId, matchPaused, replayData, envStep]);
+  useEffect(() => {
+    if (replayData.length) {
+      console.log(JSON.parse(JSON.stringify(replayData)));
+    }
+    console.log(replayData.length);
+  }, [replayData]);
   const onAgentsChange = (data: { agents: string[] }) => {
     setUserPreferences({ agents: data.agents });
     setAgents(data.agents);
@@ -91,12 +148,34 @@ const MatchRunner = () => {
       </Button>
       <div>env file: {env || ''}</div>
       <SelectAgents agents={agents} onAgentsChange={onAgentsChange} />
-      <Button onClick={createMatch} variant="contained" color="primary">
-        Create Match
-      </Button>
-      <Button onClick={stepForward} variant="contained" color="primary">
-        Step
-      </Button>
+      <ButtonGroup className={styles.controllers}>
+        {canRestartMatch && (
+          <Button onClick={createMatch} variant="contained" color="primary">
+            Restart
+          </Button>
+        )}
+        {canCreateMatch && (
+          <Button onClick={createMatch} variant="contained" color="primary">
+            Create Match
+          </Button>
+        )}
+        {!episodeDone && matchReady && (
+          <Button
+            onClick={() => {
+              setMatchPaused(!matchPaused);
+            }}
+            variant="contained"
+            color="primary"
+          >
+            {matchPaused ? 'Continue' : 'Pause'}
+          </Button>
+        )}
+        {!episodeDone && matchReady && (
+          <Button onClick={stepForward} variant="contained" color="primary">
+            Step
+          </Button>
+        )}
+      </ButtonGroup>
       {/* {matchResult && (
         <div className={styles['result-box']}>
           <ReactJson src={matchResult} />

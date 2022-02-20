@@ -22,15 +22,16 @@
     window.addEventListener('message', (event) => {
       const res = event.data;
       console.log('data', res);
+      const scoreTitle = document.getElementById('score-title');
       if (res['agentNames']) {
         const playersTitle = document.getElementById('Players');
         const p0 = res['agentNames'][0];
         const p1 = res['agentNames'][1];
         playersTitle.textContent = `${p0} vs ${p1}`;
+        scoreTitle.textContent = `Score: 0 0`;
       }
       if (res.data) {
         if (res.data['player_0']) {
-          const scoreTitle = document.getElementById('score-title');
           scoreTitle.textContent = `Score: ${res.data['player_0'].info.score} ${res.data['player_1'].info.score}`;
         }
         if (res.actions) {

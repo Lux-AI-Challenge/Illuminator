@@ -119,7 +119,9 @@ export const EnvProvider = ({ children }: EnvProviderProps) => {
     iframe?.contentWindow?.postMessage(
       res.results.outputs[res.results.outputs.length - 1]
     );
+    // await new Promise((r) => setTimeout(r, 2000));
     setReplayData(res.results.outputs);
+
     return {
       postdata: JSON.stringify(res.results),
     };
